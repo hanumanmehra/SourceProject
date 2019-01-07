@@ -1,0 +1,112 @@
+<aura:component controller="AccountWrapController">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="wrappers" type="AccountWrapController.AccountWrapper" />
+    <aura:attribute name="conwrappers" type="AccountWrapController.ContactWrapper" />
+    <aura:attribute name="accounts" type="Account" />
+    <aura:attribute name="contacts" type="Contact[]" />
+    
+    <div>
+        <div aura:id="AccountDiv">
+            <div class="" role="banner">
+                <div class="required1">
+                    <div class="slds-col">
+                        <h2 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" style="color:#0A2638;" title="Record Title">Choose Accounts</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th class="head">Name</th>
+                <th class="head">View?</th>
+            </tr>
+            <aura:iteration items="{!v.wrappers}" var="wrap"> 
+                <tr>
+                    <td class="cell">
+                        <ui:outputText value="{!wrap.acc.Name}" />
+                    </td>
+                    <td class="cell">
+                        <ui:inputCheckbox value="{!wrap.selected}" />
+                    </td>
+                </tr>
+            </aura:iteration>
+        </table>
+        <button class="slds-button slds-button--brand" onclick="{!c.getAccounts}">Get Accounts</button>
+        <button class="slds-button slds-button--brand" onclick="{!c.getContacts}">Get Conatcts</button>
+        
+        <aura:if isTrue="{!v.accounts.length >0}">
+        <div aura:id="AccountDiv">
+            <div class="" role="banner">
+                <div class="required1">
+                    <div class="slds-col">
+                        <h2 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" style="color:#0A2638;" title="Record Title">Selected Accounts</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-panel" >   
+            <div class="slds">
+                <div class="slds-scrollable--x">
+                   
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                        <tr class="slds-text-heading--label">
+                            <th scope="col" class="head">Name</th>
+                            <th scope="col" class="head">Industry</th>
+                            <th scope="col" class="head">Website</th>
+                        </tr>
+                        <aura:iteration items="{!v.accounts}" var="acc">
+                            <tr class="slds-hint-parent">
+                                <td class="cell">
+                                    <ui:outputText value="{!acc.Name}" />
+                                </td>
+                                <td class="cell">
+                                    <ui:outputText value="{!acc.Industry}" />
+                                </td>
+                                <td class="cell">
+                                    <ui:outputText value="{!acc.Website}" />
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </table>
+                 
+                </div>
+            </div>
+        </div>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.conwrappers.length >0}">
+        <div aura:id="AccountDiv">
+            <div class="" role="banner">
+                <div class="required1">
+                    <div class="slds-col">
+                        <h2 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" style="color:#0A2638;" title="Record Title">Related Contacts</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-panel" >   
+            <div class="slds">
+                <div class="slds-scrollable--x">
+                    
+                    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                        <tr class="slds-text-heading--label">
+                            <th class="head">Name</th>
+                            <th class="head">ID</th>
+                        </tr>
+                        <aura:iteration items="{!v.conwrappers}" var="co">
+                            <tr>
+                                <td class="cell">
+                                    <ui:outputText value="{!co.con.Name}"/>
+                                </td>
+                                <td class="cell">
+                                    <ui:inputCheckbox value="{!co.isSelected}"/>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </aura:if>
+    </div>
+</aura:component>

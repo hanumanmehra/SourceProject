@@ -1,0 +1,130 @@
+<apex:page standardController="Account" deferLastCommandUntilReady="true" standardStylesheets="false" wizard="false">
+<apex:sectionHeader title="my Account"/>
+    <p>Hello {!$User.FirstName}!</p>
+    <p>You are viewing the {!Account.Name} account.</p>
+    <p> here the ticker symbol field:{!Account.TickerSymbol}</p>
+    <p>The owner of Account is:{!Account.owner.name}</p>
+    <apex:stylesheet value="/resources/htdocs/css/basic.css"/>
+    <apex:form >
+   
+        <apex:pageBlock title="Custom output">
+        
+                <apex:outputField value="{!account.name}"/>
+                <apex:outputField value="{!account.owner.name}"/>
+        </apex:pageBlock>
+        
+        <apex:pageBlock Title="My Account Contacts">
+              <apex:pageBlockTable value="{!account.Contacts}" var="contact">
+                         <apex:column value="{!contact.Name}"/>
+                         <apex:column value="{!contact.MailingCity}"/>
+                         <apex:column value="{!contact.Phone}"/>
+                         
+               </apex:pageBlockTable>
+         </apex:pageBlock>
+         </apex:form>
+                      
+                      
+                      
+                      
+                    
+                      <apex:pageBlock title="Contacts of My Org">
+                          <apex:pageBlockSection >
+                              <apex:pageBlockTable value="{!account.contacts}" var="contact">
+                             <apex:column >
+                              <apex:facet name="Header">Name</apex:facet>
+                              {!account.name}
+                              </apex:column>
+                                      <apex:column value="{!contact.name}"/>
+                                      <apex:column value="{!contact.phone}"/>
+                                      <apex:column value="{!contact.title}"/>
+                                     
+                              </apex:pageBlockTable>
+                           </apex:pageBlockSection>   
+                              
+                    <p><apex:outputLink value="http://developer.salesforce.com/">click me!</apex:outputLink> </p>
+                    <p><apex:outputLink value="{!$Page.accountDisplay}">I am me!</apex:outputLink></p>
+                    <p><apex:outputLink value="{! URLFOR($Action.Account.new)}">Create</apex:outputLink></p>
+                    <p><apex:outputLink value="{! URLFOR($Action.Account.new)}">!account.name</apex:outputLink></p>
+                      
+        </apex:pageBlock>
+                <apex:form >
+               
+                      <apex:pageblock >
+                          <apex:pageMessage summary="This pageMessage will always display. 
+                      Validation error  messages appear in the pageMessages component." severity="warning" strength="3">
+                         </apex:pageMessage>
+                          <apex:pageBlockSection Title="My Contact Detail">
+                      <apex:inputField value="{!account.name}"/>
+                      <apex:inputField value="{!account.industry}"/>
+                      <apex:inputField value="{!account.AccountNumber}"/>
+                      <apex:inputField value="{!account.Type}"/>
+                      <apex:inputField value="{!account.website}"/>
+                      <apex:inputField value="{!account.AccountSource}"/>
+                      <apex:inputField value="{!account.AnnualRevenue}"/>
+                     
+                       <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Account Name" for="account__name"/>
+                    <apex:inputText value="{!account.name}" id="account__name"/> 
+                </apex:pageBlockSectionItem>
+                //inline button support
+
+                  <apex:commandButton action="{!save}" value="save!"/>
+                              </apex:pageBlockSection>
+            </apex:pageblock>
+                    </apex:form>
+                    
+                    //related list 
+                    <apex:pageBlock >You are looking for relate lastin this is {!account.name}</apex:pageBlock>
+             
+             <apex:relatedList list="opportunities" pageSize="4"/>
+             
+             //panel
+             
+              <apex:panelBar items="{!Account.name}" >
+
+        <apex:panelBarItem label="Item 1">data 1</apex:panelBarItem>
+
+        <apex:panelBarItem label="Item 2">data 2</apex:panelBarItem>
+
+        <apex:panelBarItem label="Item 3">data 3</apex:panelBarItem>
+
+    </apex:panelBar>        
+    
+    //use of grid in account
+     <apex:panelGrid columns="1" id="theGrid">
+        <apex:outputText value="First" id="theFirst"/>
+        <apex:outputText value="Second" id="theSecond"/>
+        <apex:outputText value="Third" id="theThird"/>
+        <apex:outputText value="Fourth" id="theFourth"/>
+    </apex:panelGrid>
+    
+    //use of repeat inGrid
+     <table border="0" >
+
+        <tr>
+
+            <th>Case Number</th><th>Origin</th>
+
+            <th>Creator Email</th><th>Status</th>
+
+        </tr>
+
+        <apex:repeat var="cases" value="{!Account.Cases}">
+
+        <tr>
+
+            <td>{!cases.CaseNumber}</td>
+
+            <td>{!cases.Origin}</td>
+
+            <td>{!cases.Contact.email}</td>
+
+            <td>{!cases.Status}</td>
+
+        </tr>
+
+        </apex:repeat> 
+
+    </table> 
+         
+</apex:page>

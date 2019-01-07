@@ -1,0 +1,8 @@
+<aura:component implements="force:appHostable">
+    <forceChatter:feed type="news"/>
+     <aura:attribute name="numbers" type="List"/>
+    <ui:button press="{!c.getNumbers}" label="Display Numbers" />
+    <aura:iteration var="num" items="{!v.numbers}">
+        {!num.value}
+    </aura:iteration>
+</aura:component>

@@ -1,0 +1,9 @@
+<aura:component >
+	 Observe!  Components within components!
+	<aura:attribute name="passthrough" type="String" default="passed attribute"/>
+    <c:helloHTML />
+
+    <c:helloAttributes whom="{!v.passthrough}"/>
+    <c:helloAttributes whom="separate instance"/>
+
+</aura:component>

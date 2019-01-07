@@ -1,0 +1,7 @@
+<apex:component >
+  <apex:attribute Name="MyValue" description="this is the value for Component" type="String" required="true" id="my"/>
+  <apex:attribute Name="BorderColor" description="this color for border" type="String" required="true" access="public"/>
+  <h1 style="Border:2">
+  <apex:outputText value="{!MyValue}"/></h1>
+  This is your new Component: mycomponent
+ </apex:component>

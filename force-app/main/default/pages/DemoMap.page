@@ -1,0 +1,36 @@
+<apex:page standardController="Store_Location__c">
+<script>
+function createMap(lat, lon, Store_Location__c){
+// Get the map div, and center the map at the proper geolocation
+var currentPosition = new google.maps.LatLng(lat,lon);
+var mapDiv = document.getElementById('map-canvas');
+var map = new google.maps.Map(mapDiv, {
+center: currentPosition,
+49
+Visualforce and Apex In Action Add JavaScript to Build the Map
+zoom: 13,
+mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+// Set a marker for the current location
+var positionMarker = new google.maps.Marker({
+map: map,
+position: currentPosition,
+icon: 'https://maps.google.com/mapfiles/ms/micons/green.png'
+});
+// Keep track of the map boundary that holds all markers
+var mapBoundary = new google.maps.LatLngBounds();
+mapBoundary.extend(currentPosition);
+// Set markers on the map from the @RemoteAction results
+var Store_Location__c;
+for(var i=0; i<Store_Location__c.length ; i++) 
+	{
+	Store_Location__c = Store_Location__c[i];
+	console.log(Store_Location__c[i]);
+		setupMarker();
+	}
+// Resize map to neatly fit all of the markers
+map.fitBounds(mapBoundary);
+// setupMarker function goes here
+}
+</script>
+</apex:page>

@@ -1,0 +1,47 @@
+<apex:page controller="AccountController" sidebar="false" title="Account" standardStylesheets="True" tabStyle="Account" id="pageId">
+    <apex:pageMessages id="pagemsgId"/>
+    <script>
+        function myconfirm(selid) 
+            {
+                var r=confirm("Are you sure?");
+                if(r==true)
+                {
+                    
+                    funName(selid);
+                }
+                else(r==false)
+                {
+                    parent.child.close();
+                } 
+            }
+    </script>
+    <apex:sectionHeader Title="AccountList"/>
+    <apex:pageblock mode="detailpage" >
+        <apex:form id="myId">  
+            <apex:actionFunction name="funName" action="{!deleteacc}"  reRender="myId" status="as2">
+                        <apex:param name="as" assignto="{!SelectId}" value=""/>
+            </apex:actionFunction> 
+            <apex:pageblocktable value="{!aclist}" var="acli" >
+                <apex:column headerValue="Action">
+                    <apex:outputLink title="" value="/apex/NewAccountEdit?id={!acli.id}" style="color:blue">Edit </apex:outputLink>
+                    &nbsp; | &nbsp;
+                   <apex:commandLink id="cmdId" onclick="myconfirm('{!acli.id}')"  value="Del"  reRender="myId,pagemsgId" style="color:blue">          
+                    </apex:commandLink>
+                </apex:column> 
+                <apex:outputLink value="/apex/NewAccount?id={!acli.id}">{!acli.Name}</apex:outputLink> 
+                <apex:column headerValue="Account Name">
+                    <apex:outputLink value="/apex/NewAccount?id={!Acli.Id}">{!acli.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column value="{!acli.Site}"/>
+                <apex:column value="{!acli.billingState}"/>
+                <apex:column value="{!acli.Phone}"/>
+                <apex:column value="{!acli.Type}"/>
+            </apex:pageblocktable>
+        </apex:form>
+    
+    </apex:pageblock>
+    
+    
+    
+
+</apex:page>

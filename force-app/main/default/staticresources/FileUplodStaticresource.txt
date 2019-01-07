@@ -1,0 +1,7 @@
+<string xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+	{{{C:\RESTUploadFile\5b10c093-c629-47e7-bd4e-5433c5188718}}}
+</string>
+
+<string xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+	https://technomileusa.sharepoint.com/Shared Documents/Account/Test Hanu 31 May/Test Hanu 31 May2/2015 Legal Non-Compete.docx
+</string>

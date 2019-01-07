@@ -1,0 +1,16 @@
+<apex:page >
+  <form name="abc" method="POST"  
+    action="https://www.billdesk.com/pgidsk/pgijsp/">
+  <input type="hidden" name="txtCustomerID" value="1073234"/>
+  <input type="hidden" name="txtTxnAmount" value="2400.30"/>
+  <input type="hidden" name= "txtAdditionalInfo1" value="Identity of Merchant website with Billdesk "/>
+  <input type="hidden" name=" txtAdditionalInfo2" 
+    value="USD"/>
+  <input type="hidden" name=" txtAdditionalInfo3" value="Kerala Backwaters"/>
+  <input type="hidden" name=" txtAdditionalInfo4" value="25-Sep-08"/>
+  <input type="hidden" name="txtAdditionalInfo5" value="28-Sep-08"/>
+  <input type="hidden" name="txtAdditionalInfo6" value="2"/>
+  <input type="hidden" name="txtAdditionalInfo7" value="1"/>
+  <!--<input type="hidden" name="RU" value="https://payment.merchant.com"/>-->
+  </form>
+</apex:page>

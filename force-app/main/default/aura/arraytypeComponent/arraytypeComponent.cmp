@@ -1,0 +1,14 @@
+<aura:component controller="AttributeType">
+    <aura:attribute name="favoriteColors" type="String[]" default="cyan, green, Magenta"/>
+    <aura:iteration items="{!v.favoriteColors}" var="s">
+        {!s}
+    </aura:iteration>
+    <ui:button press="{!c.getString}" label="update"/>
+    
+    <aura:attribute name="numbers" type="List"/>
+	<ui:button press="{!c.getNumbers}" label="Display Numbers" />
+	<aura:iteration var="num" items="{!v.numbers}">
+  	{!num.value}
+	</aura:iteration>
+	
+</aura:component>

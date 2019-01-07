@@ -1,0 +1,64 @@
+<apex:page standardController="Campaign" showHeader="true" sidebar="true" contentType="text/html" docType="html-5.0">
+<p> I am Campaign page</p>
+<apex:image value="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSBbBz4PiqyDudUQV8PWGC1aQjC6j1jWO8V-ghdns2PCre8mYS_jN8322zY" height="200" width="400"/>
+ <apex:messages />
+ <apex:form >
+  <apex:pageblock title="My campaign page" helptitle="For help" helpurl="https://help.salesforce.com/home" mode="Edit" tabStyle="campaign">
+     <apex:pageBlockSection title="Campaign detail" collapsible="true">
+     <apex:pageBlockTable value="{!campaign}" var="cam" align="center" border="100" rules="row" style="form">
+     <apex:column value="{!cam.name}"/>
+      <apex:column value="{!cam.status}"/>
+       <apex:column value="{!cam.ActualCost}"/>
+       <apex:column value="{!cam.NumberOfResponses}"/>
+       <apex:column value="{!cam.Type}"/>
+       <apex:column value="{!cam.StartDate}"/>
+       <apex:column headerValue="IsActive?"/>
+       <apex:inputcheckbox value="{!cam.IsActive}"/>
+         </apex:pageBlockTable>
+       </apex:pageBlockSection>
+       </apex:pageBlock> 
+       </apex:form>
+      <apex:form >
+        <apex:pageBlock title="Commercial detail">
+      <apex:pageMessage summary="This message is for detail page. validation error will produce in page detail" severity="Info" strength="3">
+      </apex:pageMessage> 
+     <apex:pageBlockSection title="Campaign Commmercial Detail" columns="2">
+     
+       <apex:pageBlockSectionItem dataStyle="data">
+         <apex:outputLabel value="Total value Opportunities" for="AmountAllOpportunities"></apex:outputLabel>
+        
+         <apex:inputText value="{!campaign.AmountAllOpportunities}" id="AmountAllOpportunities"/>
+           </apex:pageBlockSectionItem>
+      <apex:pageBlockSectionItem >
+      <apex:outputLabel value=" ExpectedRevenue" for="ExpectedRevenue"></apex:outputLabel>
+      <apex:inputText value="{!Campaign.ExpectedRevenue}" id="ExpectedRevenue"/>
+           </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+      <apex:outputLabel value="Budgeted Cost" for="BudgetedCost"></apex:outputLabel>
+      <apex:inputText value="{!Campaign.BudgetedCost}" id="BudgetedCost"/>
+           </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+           <apex:outputLabel value="Actual Cost" for="ActualCost"></apex:outputLabel>
+      <apex:inputText value="{!Campaign.ActualCost}" id="ActualCost"/>
+           </apex:pageBlockSectionItem>
+           
+           <apex:inputField value="{!Campaign.NumberSent}"/>
+           <apex:inputHidden value="{!Campaign.Type}"/>
+           
+           <apex:commandButton value="Save" action="{!save}" />
+           <apex:commandButton value="cancel" action="{!cancel}"/>
+           <apex:outputLink value="http://developer.salesforce.com/">Click Me</apex:outputLink>
+            
+     </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:form>
+     <apex:listViews type="opportunity"/>
+     <apex:outputLink value="https://www.salesforce.com">www.salesforce.com</apex:outputLink>
+     <apex:outputPanel >i am panel</apex:outputPanel>
+
+
+
+
+ 
+</apex:page>

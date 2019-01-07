@@ -1,0 +1,41 @@
+<apex:page >
+  <html>
+    <head id="Head1" runat="server">
+        <title>Payment</title>
+        <script type="text/javascript">
+            function myfunc ()
+            {
+                var frm = document.all("form2");
+                console.log('frm'+frm);
+                frm.submit();
+            }
+            window.onload = myfunc;
+        </script>
+    </head>
+    <body>
+        <form id="form2" method="post" action="https://www.billdesk.com/" name="form2">
+            <input type="hidden" name="txtCustomerID" 
+                   value="<%=Request('txtCustomerID')%>" />
+            <input type="hidden" name="txtTxnAmount" 
+                   value="<%=Request('txtTxnAmount')%>" />
+                 <input type="hidden" name="txtAdditionalInfo1" 
+                        value="<%=Request('txtAdditionalInfo1')%>" />
+    
+            <input type="hidden" name="txtAdditionalInfo2" 
+    
+                   value="<%=Request('txtAdditionalInfo2')%>" />
+            <input type="hidden" name="txtAdditionalInfo3" 
+                   value="<%=Request('txtAdditionalInfo3')%>" />
+            <input type="hidden" name="txtAdditionalInfo4"                
+                   value="<%=Request('txtAdditionalInfo4')%>" />
+            <input type="hidden" name="txtAdditionalInfo5" 
+                   value="<%=Request('txtAdditionalInfo5')%>" />
+            <input type="hidden" name="txtAdditionalInfo6" 
+                   value="<%=Request('txtAdditionalInfo6')%>" />
+            <input type="hidden" name="txtAdditionalInfo7" 
+                   value="<%=Request('txtAdditionalInfo7')%>" />
+           <!-- <input type="hidden" name="RU" value="http://www.mahindrahomestays.com/Pages/confirmation.aspx" />-->
+         </form>
+    </body>
+     </html> 
+</apex:page>

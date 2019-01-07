@@ -1,0 +1,24 @@
+<aura:component >
+	<ui:inputText label="Name" aura:id="name" placeholder="First, Last"/>
+	<ui:outputText aura:id="nameOutput" value=""/>
+	<ui:button aura:id="outputButton" label="Submit" press="{!c.getNumbers}"/>
+    
+    <aura:attribute name="first" type="String" default="John"/>
+	<aura:attribute name="last" type="String" default="Doe"/>
+
+	<ui:inputText label="First Name" value="{!v.first}" updateOn="keyup"/>
+	<ui:inputText label="Last Name" value="{!v.last}" updateOn="keyup"/>
+
+    <!-- Returns "John Doe" -->
+	<ui:outputText value="{!v.first +' '+ v.last}"/>
+    
+    
+     <aura:attribute name="text" type="String" default="Just a string.  Waiting for change."/>
+    <input type="button" value="Flawed HTML Button" onclick="alert('this will not work')"/>
+    <br/>
+    <input type="button" value="Hybrid HTML Button" onclick="{!c.getInput}"/>
+    <br/>
+    <ui:button label="Framework Button" press="{!c.getInput}"/>
+    <br/>
+    {!v.text}
+</aura:component>

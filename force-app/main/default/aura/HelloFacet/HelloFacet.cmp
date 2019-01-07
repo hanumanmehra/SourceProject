@@ -1,0 +1,23 @@
+<aura:component >
+    See how we set the header facet.<br/>
+
+    <aura:attribute name="edit" type="Boolean" default="true"/>
+<aura:if isTrue="{!v.edit}">
+    <ui:button label="Edit"/>
+    <aura:set attribute="else">
+        You can’t edit this.
+    </aura:set>
+</aura:if>
+	{!$Browser.isTablet}
+    {!$Browser.isPhone}
+    {!$Browser.isAndroid}
+    {!$Browser.formFactor}
+    
+
+    
+    {!$Locale.language}
+    {!$Locale.timezone}
+    {!$Locale.numberFormat}
+    {!$Locale.currencyFormat}
+    
+</aura:component>

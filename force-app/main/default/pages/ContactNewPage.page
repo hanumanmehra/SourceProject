@@ -1,0 +1,21 @@
+<apex:page StandardController="Contact" sidebar="true" extensions="AccountDetailController">
+	
+	<apex:pagemessages id="tsid"/>
+	<apex:sectionHeader title="Contact"/>
+	<apex:form >
+		<apex:pageblock title="New Contact">
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!save}" value="Save" />
+				<apex:commandButton action="{!Cancel}" value="Cancel" />
+			</apex:pageBlockButtons>
+			<apex:pageblocksection >
+				<apex:inputField value="{!Contact.FirstName}"/>
+				<apex:inputField value="{!Contact.LastName}"/>
+				<apex:inputField value="{!Contact.Email}"/>
+				<apex:inputField value="{!Contact.Phone}"/>
+				<apex:inputField value="{!Contact.AccountId}"/>
+			</apex:pageblocksection>
+		</apex:pageblock>
+	</apex:form>
+
+</apex:page>

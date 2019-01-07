@@ -1,0 +1,711 @@
+<apex:page standardController="Contact"  extensions="ContactController" sidebar="false" showheader="false" docType="HTML-5.0" tabstyle="Contact"> 
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <apex:pagemessages />
+    <script>
+             $(document).ready(function(){
+        $(".nav-tabs a").click(function(){
+            $(this).tab('show');
+        });
+    });     
+    </script>
+    <style>
+    .action{
+        position: absolute:relative;
+         background-color:'lightblue';
+    }   
+    </style>
+    <head>
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS090, 'assets/styles/salesforce-lightning-design-system.css')}" />
+    </head>
+    <div class="Container" style="border-style: inherit">
+        <apex:form >
+            <div class="slds-page-header" role="banner">
+                <div class="slds-grid">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon-standard-contact slds-icon--large">
+                              <use xlink:href="{!URLFOR($Resource.SLDS090, 'assets/icons/standard-sprite/svg/symbols.svg#contact')}"></use>
+                            </svg>
+                        </div>
+                      <div class="slds-media__body">
+                        <p class="slds-text-heading--label" style="font-size: 1.20rem;line-height: 1.25;text-transform: uppercase;letter-spacing: .0625em;color: #54698d;">Contact</p>
+                        <h1 class="slds-text-heading--Large" style="font-size: 2.50rem;line-height: 1.25;letter-spacing: .0625em;">{!Contact.Name}</h1>
+<!--                         <h2><chatter:follow entityId="{!contact.id}"/><>  -->
+                        <button class="slds-button slds-button--neutral" style="height: 37px;width: 98px;"><a href="#">Follow</a></button>
+                     </div>
+                    </div>
+              </div>
+                         <div class="slds-col slds-no-flex slds-align-right">
+                              <div class="slds-button-group" role="group" align="right" style="float:right">
+                                <button class="slds-button slds-button--neutral" style="height: 37px;width: 98px;"><a href="#">Send Email</a></button>
+                                <button class="slds-button slds-button--neutral"><a href="/{!contact.Id}/e">Edit</a></button>
+                                <button class="slds-button slds-button--neutral"><a href="/500/e">New Case</a></button>  
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-default dropdown-toggle;slds-button slds-button--neutral" data-toggle="dropdown"  style="height: 36px;width: 46px;float:left">
+                                    <span class="caret" style="float:middle"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" style="float:left;min-width: 122px; color: steelblue; margin-left: -163%;" styleclass="media">
+                                    <li><a data-toggle="modal" data-target="#noteModal">New Note</a></li>
+                                    <li><a href="/{!contact.Id}/e?clone=1">clone</a></li>
+                                    <li><a data-toggle="modal" data-target="#mydelModal">Delete</a></li>
+                                  </ul>
+                                </div>
+  
+                              </div>
+                      </div>
+                      <div class="modal fade" id="mydelModal" role="dialog">
+                                                <div class="modal-dialog modal-mm">
+                                                
+                                                  <!-- Modal content-->
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="modal-title" style="text-align: center;font-size: 2.125rem;padding: 2rem 0;margin-left: 35%;">Delete Contact</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                       <p style="text-align: center;font-size: 2.125rem;padding: 2rem 0;">Are you sure you want to delete this Contact?</p>      
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                     
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal" style="height: 33px;color: blue;width: initial;">Cancel</button>
+                                                       <apex:commandButton action="{!deleteacc}" value="Delete" style="height: 33px; width: 64px;background: rgb(0,112,210);color: antiquewhite;"/>
+                                                    </div>
+                                                  </div>
+                                                  
+                                                
+                                              </div>
+                                              
+                                            </div>
+                                            
+                                             <div class="modal fade" id="noteModal" role="dialog">
+                                                <div class="modal-dialog">
+                                                
+                                                  <!-- Modal content-->
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="modal-title" style="text-align: center;font-size: 2.125rem;padding: 2rem 0;margin-left: 35%;">New Note</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                       <p>
+                                                            <div>
+                                                                  <label for="noteid">RelatedTo</label>
+                                                                  <apex:inputText value="{!Contact.Name}" id="noteid" style="width: 100%; height: 35px;" styleclass="form-control"/>
+                                                            </div> 
+                                                            <div>
+                                                                <label for="notetext"></label><br>
+                                                                <apex:inputtextarea id="notetext" richtext="true" value="{!Notesbody}"/></br>
+                                                            </div>
+                                                       </p>      
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                     <button type="button" class="btn btn-default" data-dismiss="modal" style="height:39px;width: 77px; color: rgb(216, 221, 230);width: initial;">Cancel</button>
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal"  style="height: 39px;width: 77px;background: rgb(0,112,210);color: antiquewhite;">Done</button>
+<!--                                                        <apex:commandButton action="{!newnote}" value="Done" style="height: 39px;width: 77px;background: rgb(0,112,210);color: antiquewhite;/> -->
+                                                    </div>
+                                                  </div>
+                                                  
+                                                
+                                              </div>
+                                              
+                                            </div>
+<!--saurav  jhgjhgj -->   
+            <br>
+            </br>
+            
+            <!-- PAGE HEADER DETAIL ROW -->
+            <div class="slds-grid slds-page-header__detail-row" >
+              <div class="slds-col--padded slds-size--1-of-4">
+                <dl>
+                  <dt>
+                    <p class="slds-text-heading--label slds-truncate" ><span Style="font-size: 12px;color: #54698d;">Title</span></p>
+                  </dt>
+                  <dd>
+                    <p class="slds-text-body--regular slds-truncate" style="font-size: 1.25rem;">{!Contact.Title}</p>
+                  </dd>
+                </dl>
+              </div>
+            
+              <!-- PAGE HEADER / ROW 2 / COLUMN 2 -->
+              <div class="slds-col--padded slds-size--1-of-4" >
+                <dl>
+                  <dt>
+                    <p class="slds-text-heading--label slds-truncate" style = "font-size: 1.20rem;line-height: 1.25;text-transform: uppercase;letter-spacing: .0625em;color: #54698d;">Account Name</p>
+                  </dt>
+                  <dd><a href="#">{!Contact.Name}</a></dd>
+                </dl>
+              </div>
+            
+              <!-- PAGE HEADER / ROW 2 / COLUMN 3 -->
+              <div class="slds-col--padded slds-size--1-of-4">
+                <dl>
+                  <dt>
+                    <p class="slds-text-heading--label slds-truncate" style = "font-size: 1.20rem;line-height: 1.25;text-transform: uppercase;letter-spacing: .0625em;color: #54698d;">Phone</p>
+                  </dt>
+                  <dd><a href="#">{!contact.Phone}</a></dd>
+                </dl>
+              </div>
+            
+              <!-- PAGE HEADER / ROW 2 / COLUMN 4 -->
+              <div class="slds-col--padded slds-size--1-of-4">
+                <dl>
+                  <dt>
+                    <p class="slds-text-heading--label slds-truncate" style = "font-size: 1.20rem;line-height: 1.25;text-transform: uppercase;letter-spacing: .0625em;color: #54698d;">Email</p>
+                  </dt>
+                  <dd><a href="#">{!contact.Email}</a></dd>
+                </dl>
+              </div>
+            </div>
+        </div>
+        
+        <div class="col-sm-8">
+            <div class="panel with-nav-tabs panel">
+                        <ul class="nav nav-tabs">
+                            <li class="active" onclick="onclick(this)" ><a href="#related" >RELATED</a></li>
+                            <li  onclick="onclick(this)" ><a href="#detail" >DETAILS</a></li>
+                        </ul>
+               
+                    <div class="tab-content">
+                        <div id="related" class="tab-pane fade in active" >
+                            <div class="myapp">
+
+                              <!-- RELATED LIST CARDS-->
+                            
+                              <div class="slds-grid slds-m-top--large">
+                            
+                                 <!-- MAIN CARD -->
+                                 <div class="slds-col slds-col-rule--right slds-p-right--large slds-size--12-of-12">
+                                      <div class="slds-card">
+                                        <header class="slds-card__header slds-grid">
+                                          <div class="slds-col slds-media slds-media--center">
+                                            <div class="slds-media__figure">
+                                              <svg aria-hidden="true" class="slds-icon slds-icon-standard-contact slds-icon--small">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS090, 'assets/icons/standard-sprite/svg/symbols.svg#opportunities')}"></use>
+                                              </svg>
+                                            </div>
+                                            <div class="slds-media__body">
+                                              <h3 class="slds-text-heading--medium"> <apex:outputLink title="" value="https://ap2.lightning.force.com/one/one.app#/sObject/{!contact.Id}/rlName/Opportunities/view" style="color: #015ba7">Opportunities[{!opporlist.size}]</apex:outputLink></h3>
+                                            </div>
+                                          </div>
+                                          <div class="slds-col slds-no-flex">
+                                                  <!-- Trigger the modal with a button -->
+                                              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#OpporModal" style="float:middle;height: 32px;width: 64px; color:blue"><a href="/006/e?lookupcmpgn=1&amp;accid=00128000008t9lW&amp;conid=00328000007hWej&amp;opp6=Public+Relations">New</a></button>
+                                            
+                                              <!-- Modal -->
+                                              
+<!--                                            <button class="slds-button slds-button--neutral slds-button--Large" style="height: 32px;width: 64px;">New</button> -->
+                                          </div>
+                                        </header>
+                                       </div>
+                                 </div>
+                                 </div><br>
+                                 </br>
+                                 <div class="slds-grid slds-m-middle--large">
+                                 <div class="slds-col slds-col-rule--right slds-p-right--large slds-size--12-of-12">
+                                      <div class="slds-card">
+                                        <header class="slds-card__header slds-grid">
+                                          <div class="slds-col slds-media slds-media--center">
+                                            <div class="slds-media__figure">
+                                              <svg aria-hidden="true" class="slds-icon slds-icon-standard-contact slds-icon--small">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS090, 'assets/icons/standard-sprite/svg/symbols.svg#cases')}"></use>
+                                              </svg>
+                                            </div>
+                                            <div class="slds-media__body">
+                                              <h3 class="slds-text-heading--medium"><a href="https://ap2.lightning.force.com/one/one.app#/sObject/{!contact.Id}/rlName/Cases/view">Cases({!listcase.size})</a></h3>
+                                            </div>
+                                          </div>
+                                          <div class="slds-col slds-no-flex">
+                                            
+                                              <!-- Trigger the modal with a button -->
+                                              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#CaseModal" style="float:middle;height: 32px;width: 64px; color:blue"><a href="/500/e?def_contact_id={!contact.Id}&amp;def_account_id=00128000008t9lW">New</a></button>
+                                             
+<!--                                            <button class="slds-button slds-button--neutral slds-button--Large" style="height: 32px;width: 64px;">New</button> -->
+                                          </div>
+                                        </header>
+                                            <div class="slds-col slds-p-left--large slds-size--4-of-12">
+                                                <section class="slds-card__body">
+                                                  <!-- LIST WITH ONE ITEM -->
+                                                  <ul>
+                                                    <li class="slds-tile slds-hint-parent">
+                                                        <p class="tile__title slds-truncate"><a href="#">{!listcase[0].CaseNumber}</a></p> 
+                                                    <!--        <button class="slds-button slds-button--icon-border-filled slds-button--icon-border-large" style="float:right" immediate="true">
+                                                              <svg aria-hidden="true" class="slds-button__icon slds-button__icon--hint slds-button__icon--medium">
+                                                                <use xlink:href="{!URLFOR($Resource.SLDS090, 'assets/icons/utility-sprite/svg/symbols.svg#down')}"> 
+                                                               </use>
+                                                              </svg>
+                                                              <span class="slds-assistive-text">
+                                                              </span>
+                                                            </button>--> 
+                                                             <div class="btn-group" style="float:right">
+                                                                  <button type="button" class="btn btn-default dropdown-toggle;slds-button slds-button--neutral" data-toggle="dropdown"  style="height: 23px;width: 23px; float: left;">
+                                                                    <span class="caret" style="float:middle"></span>
+                                                                  </button>
+                                                                  <ul class="dropdown-menu" style="float: left;min-width: 100px; padding: 5px 0;margin: 2px 0 0;font-size: 14px;" styleclass="media">
+                                                                    <li><a href="/{!listcase[0].Id}/e">edit</a></li>
+                                                                    <li><a data-toggle="modal" data-target="#mycaseModal">Delete</a></li>
+                                                                  </ul>
+                                                                   <div class="modal fade" id="mycaseModal" role="dialog">
+                                                <div class="modal-dialog">
+                                                
+                                                  <!-- Modal content-->
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="modal-title" style="text-align: center;font-size: 2.125rem;padding: 2rem 0;margin-left: 38%;">Delete Case</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                       <p style="text-align: center;font-size: 2.125rem;padding: 2rem 0;">Are you sure you want to delete this Case?</p>      
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                     
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal" style="height: 33px;color: rgb(216, 221, 230);width: initial;">Cancel</button>
+                                                       <apex:commandButton action="{!deletecase}" value="Delete" style="height: 33px; width: 64px;background: rgb(0,112,210); color: antiquewhite;"/>
+                                                    </div>
+                                                  </div>  
+                                              </div>  
+                                            </div>
+                                                            </div>
+                                                      <div class="tile__detail">
+                                                        <dl class="dl--horizontal slds-text-body--medium">
+                                                          <dt class="slds-dl--horizontal__label">
+                                                            <p class="slds-truncate" style="font-size: 13px;font-weight: 200;">Subject:</p>
+                                                          </dt>
+                                                          <dd class="slds-dl--horizontal__detail slds-tile__meta">
+                                                            <p class="slds-truncate"><a href="#">{!listcase[0].Subject}</a></p>  
+                                                          </dd>
+                                                           </dl>
+                                                          
+                                                          <dl class="dl--horizontal slds-text-body--medium">
+                                                          <dt class="slds-dl--horizontal__label">
+                                                            <p class="slds-truncate" style="font-size: 13px;font-weight: 200;">Priority:</p>
+                                                          </dt>
+                                                          <dd class="slds-dl--horizontal__detail slds-tile__meta">
+                                                        <p class="slds-truncate">{!listcase[0].Priority}</p> 
+                                                          </dd>
+                                                        </dl>
+                                                         <dl class="dl--horizontal slds-text-body--medium">
+                                                          <dt class="slds-dl--horizontal__label" >
+                                                            <p class="slds-truncate" style="font-size: 13px;font-weight: 200;">Date/Time open....</p>
+                                                          </dt>
+                                                          <dd class="slds-dl--horizontal__detail slds-tile__meta">
+                                                        <p class="slds-truncate">{!listcase[0].ClosedDate}</p> 
+                                                          </dd>
+                                                        </dl>
+                                                      </div>
+                                                    </li>
+                                                  </ul>
+                                                  <!-- LIST WITH ONE ITEM -->
+                                                </section>
+                                            
+                                                <footer class="slds-card__footer">
+                                                  <a href="https://ap2.lightning.force.com/one/one.app#/sObject/{!contact.Id}/rlName/Cases/view">View All</a>
+                                                </footer>
+                                            </div>
+                                        </div>
+                                 </div>
+                                 <!-- / MAIN CARD -->
+                              </div><br>
+                                 </br>
+                              <div class="slds-grid slds-m-below--large">
+                            
+                                 <!-- MAIN CARD -->
+                                 <div class="slds-col slds-col-rule--right slds-p-right--large slds-size--12-of-12">
+                                      <div class="slds-card">
+                                        <header class="slds-card__header slds-grid">
+                                          <div class="slds-col slds-media slds-media--center">
+                                            <div class="slds-media__figure">
+                                              <svg aria-hidden="true" class="slds-icon slds-icon-standard-contact slds-icon--small">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS090, 'assets/icons/standard-sprite/svg/symbols.svg#opportunities')}"></use>
+                                              </svg>
+                                            </div>
+                                            <div class="slds-media__body">
+                                              <h3 class="slds-text-heading--medium"><a href="https://ap2.lightning.force.com/one/one.app#/sObject/{!contact.Id}/rlName/CombinedAttachments/view">Notes and Attachments</a></h3>
+                                            </div>
+                                          </div>
+                                          <div class="slds-col slds-no-flex">
+                                            <!-- Trigger the modal with a button -->
+                                              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="float:middle;height: 32px;width: 120px; color: #015ba7;">Upload a File</button>
+                                            
+                                              <!-- Modal -->
+                                              <div class="modal fade" id="myModal" role="dialog">
+                                                <div class="modal-dialog">
+                                                
+                                                  <!-- Modal content-->
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                      <h4 class="modal-title"></h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                            <apex:outputLabel value="File Name" for="fileName"/><br></br>
+                                                            <apex:inputText value="{!attachment.name}" id="fileName"/>
+                                                            </div>
+                                                             <div class="col-sm-6"> 
+                                                            <apex:outputLabel value="File" for="file"/><br></br>
+                                                           <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}" id="file"/> 
+                                                            </div>
+                                                        </div>         
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-default" data-dismiss="modal" style="height: 33px;width: initial;">Cancel</button>
+                                                       <apex:commandButton action="{!upload}" value="Save" style="height: 33px; width: 64px;background: rgb(0,112,210); color: antiquewhite;"/>
+                                                    </div>
+                                                  </div> 
+                                              </div>  
+                                            </div>
+<!--                                            <button class="slds-button slds-button--neutral slds-button--large" style="height: 32px;width: 120px;">Upload a File</button> -->
+                                          </div>
+                                        </header>
+                                        <div>
+                                         <apex:outputfield value="{!attachment.name}" />
+                                         <apex:outputfield value="{!attachment.contentType}" />
+                                         </div>
+                                        </div>
+                                 </div>
+                                 </div>
+                              <!-- / RELATED LIST CARDS -->
+                            
+                            </div>
+                        </div>
+                        <div id="detail" class="tab-pane fade" >
+                            <div class ="row">
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Owner Name</apex:outputpanel><br></br>
+                                    <apex:outputField value="{!contact.owner.name}"/>
+                                </div>  
+                                <div class="col-sm-6">
+                                <apex:outputpanel >Phone</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Phone}"/>
+                                </div>  
+                            </div>
+                            <br>
+                            </br>
+                            <div class ="row" align="left" draggable="false">
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Name</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Name}"/>
+                                </div>  
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >HomePhone</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.HomePhone}"/>
+                                </div>  
+                            </div> <br></br>
+                            
+                        <div class ="row" align="left" draggable="false">
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Level</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Level__c}"/>
+                                </div>  
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >MobilePhone</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.MobilePhone}"/>
+                                </div>  
+                        </div> <br></br>
+                        <div class ="row" align="left" draggable="false">
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Title</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Title}"/>
+                                </div>  
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Fax</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Fax}"/>
+                                </div>  
+                        </div> <br></br>
+                        
+                        <div class ="row" align="left" draggable="false">
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Department</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Department}"/>
+                                </div>  
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Birthdate</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Birthdate}"/>
+                                </div>  
+                        </div> <br></br>
+                        
+                        <div class ="row" align="left" draggable="false">
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Email</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Email}"/>
+                                </div>  
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Assitant</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.AssistantName}"/>
+                                </div>  
+                        </div> <br></br>
+                        
+                         <div class ="row" align="left" draggable="false">
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Language</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Languages__c}"/>
+                                </div>  
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >AssistantPhone</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.AssistantPhone}"/>
+                                </div>  
+                        </div> <br></br>
+                        
+                        <div class ="row" align="left" draggable="false">
+                                  
+                                <div class="col-sm-6">
+                                    <apex:outputpanel >Description</apex:outputpanel><br></br>
+                                    <apex:outputfield value="{!contact.Description}"/>
+                                </div>  
+                        </div> <br></br>
+                        
+                        </div>
+                    </div>
+                </div>
+              
+               </div>
+               <div class="col-sm-4">
+            <div class="panel with-nav-tabs panel-default">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#activity" data-toggle="tab">ACTIVITY</a></li>
+                            <li><a href="#collaborate" data-toggle="tab">COLLABORATE</a></li>
+                        </ul>
+                
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="activity">
+                            <div class="container">
+                                      <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#newtask">New Task</a></li>
+                                        <li ><a href="#newevent">New Event</a></li>
+                                        <li><a href="#log">Log A Call</a></li>
+                                        <li><a href="#email">Email</a></li>
+                                      </ul>
+                            </div>
+                             <div class="tab-content">
+                               <div id="newtask" class="tab-pane fade in active" > 
+                                    <form role="form" id="frmid">
+                                    <apex:actionRegion >
+                                        <div class="form-group" >
+                                              <label for="sub">Subject</label>
+                                              <apex:inputfield styleclass="form-control" id="sub" value="{!newtask.Subject}"/>
+                                         </div>
+                                        
+                                         <div class="form-group">
+                                            <label for="dat">Due Date</label><br>
+                                            <apex:inputfield type="datetime" styleclass="form-control" id="dat" value="{!newtask.ActivityDate}"/></br>
+                                        </div>
+                                          <div class="form-group">
+                                              <label for="sel4">Name</label><br>
+                                              <apex:inputfield styleclass="form-control" id="sel4" value="{!newtask.WhoId}"/>
+                                              </br> 
+                                        </div>
+                                       <div class="form-group">
+                                            <label for="rlt">Realated To</label><br>
+                                            <apex:inputfield id="rlt" styleclass="form-control"  value="{!newtask.WhatId}"/></br>
+                                        </div>
+<!--                                          <div class="form-group"> -->
+<!--                                             <label for="Assignsel">Assigned To</label><br> -->
+<!--                                            <apex:inputfield id="Assignsel" styleclass="form-control" value="{!newtask.OwnerId}"/> --> 
+<!--                                            </br>  -->
+<!--                                         </div> -->
+                                        <div class="form-group">
+                                            <label for="titlesel">Status</label><br>
+                                                <apex:inputfield id="titlesel" styleclass="form-control" value="{!newtask.Status}"/>
+                                               </br>
+                                        </div>
+                                        <div class="form-group" align ="right">
+                                            <apex:commandButton value="Save" action="{!savetask}" rerender="frmid" oncomplete="alert();" style="background: rgb(0,112,210);color: antiquewhite;height: 44px;width: 95px;" />
+                                        </div>
+                                        </apex:actionRegion>
+                                    </form>
+                                    
+                               </div>  
+                               
+                                <div id="newevent" class="tab-pane fade " > 
+                                    
+<!--                                     <form role="form" id="eventfrmid"> -->
+                                     <apex:actionRegion id="eventfrmid">
+                                        <div >
+                                              <label for="subeve">Subject</label>
+                                              <apex:inputfield styleclass="form-control" id="subeve" value="{!newevent.Subject}"/>
+<!--                                               <apex:inputfield styleclass="form-control" id="subeve" value="{!newevent.Subject}" /> -->
+                                         </div>
+                                        
+                                        <div >
+                                            <label >Start</label><br>
+                                            </br>
+                                            <div class="row">
+                                            <div class="col-sm-6">
+                                                <label for="dat2">Date</label>
+                                                <apex:inputfield styleclass="form-control" id="dat2" value="{!newevent.StartDateTime}"  />
+                                            </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div >
+                                            <label >End</label><br></br>
+                                            
+                                            <div class="row">
+                                            <div class="col-sm-6">
+                                            <label for="dat1">Date</label>
+                                            <apex:inputfield styleclass="form-control" id="dat1" value="{!newevent.EndDateTime}" />
+                                            </div>
+                                            <!--  <div class="col-sm-6">
+                                            <label for="tm">Time:</label>
+                                            <apex:inputfield  styleclass="form-control" id="tm" value="{!newevent.EndDateTime}" />
+                                            </div>-->
+                                            </div>
+                                            
+                                        </div>
+                                        <div >
+                                            <label><input type="checkbox" value="{!newevent.IsAllDayEvent}"/>All-Day Event</label>
+                                        </div>
+                                        <div >
+                                            <label for="nm">Name</label><br>
+                                            <apex:inputfield styleclass="form-control" id="nm" value="{!newevent.WhoId}" /></br>
+                                        </div>
+                                        <div >
+                                            <label for="rlt1">Realated To</label><br>
+                                            <apex:inputfield styleclass="form-control" id="rlt1" value="{!newevent.WhatId}" /></br>
+                                        </div>
+<!--                                         <div class="form-group"> -->
+<!--                                             <label for="Assignsel1">Assigned To</label><br> -->
+<!-- <!--                                           <apex:inputfield styleclass="form-control" id="Assignsel1" value="{!newevent.OwnerId}" />  -->
+<!--                                                </br>  -->
+<!--                                         </div>  -->
+                                        <div >
+                                            <label for="st">Location</label><br>
+                                            <apex:inputfield styleclass="form-control" id="st" value="{!newevent.Location}"/></br>
+                                        </div>
+                                        <div  align ="right"> 
+                                             <apex:commandButton value="Save" action="{!saveevent}"  oncomplete="alert('hi')" rerender="eventfrmid" immediate="true" style="background: rgb(0,112,210);color: antiquewhite;height: 44px;width: 95px;"/>
+                                        </div>
+                                      </apex:actionRegion>
+<!--                                     </form>    -->
+                               </div> 
+                               
+                               <div id="log" class="tab-pane fade " > 
+<!--                                     <form role="form" id="logfrmid"> -->
+                                        <apex:actionRegion id="logfrmid"  >
+                                        <div >
+                                              <label for="sub2">Subject</label>
+                                              <apex:inputfield styleclass="form-control" id="sub2" value="{!log_a_call.Subject}"/>
+                                             
+                                         </div>
+                                         <div >
+                                            <label for="cmnt">Comments</label><br>
+                                            <apex:inputfield styleclass="form-control" id="cmnt" value="{!log_a_call.Description}"/></br>
+                                        </div>
+                                        <div >
+                                            <label for="nm2">Name</label><br>
+                                            <apex:inputfield styleclass="form-control" id="nm2" value="{!log_a_call.WhoId}"/></br>
+                                        </div>
+                                        <div >
+                                            <label for="rlt2">Realated To</label><br>
+                                            <apex:inputfield styleclass="form-control" id="rlt2" value="{!log_a_call.WhatId}"/></br>
+                                        </div>
+                                        <div  align ="right">
+                                            <apex:commandbutton value="Save" action="{!savecalllog}" rerender="logfrmid" oncomplete="alert('hello')" immediate="true" style="color:blueviolet;background: rgb(0,112,210);color: antiquewhite;height: 44px;width: 95px;"/>
+                                        </div>
+                                        </apex:actionRegion>
+<!--                                     </form> -->
+                               </div>   
+                               <div id="email" class="tab-pane fade " > 
+<!--                                     <form role="form" id="emailfrm"> -->
+                                    <apex:actionRegion id="emailfrm">
+                                        <div >
+                                            <label for="nm11">To</label><br>
+                                            <apex:inputText id="nm11" value="{!toAddresses}" style="width: 100%; height: 35px;" styleclass="form-control"/></br>
+                                        </div>
+<!--                                         <div class="form-group"> -->
+<!--     <apex:inputText value="{!email}" id="email"/>                                        <label for="nm">Cc</label> -->
+<!--                                              <label for="nm">Bcc</label> -->
+<!--                                         </div> --> 
+                                        <div >
+                                            <label for="cmnt">Cc</label><br>
+                                            <input id="cmnt" styleclass="form-control" style="width: 100%; height: 35px;"/></br>
+                                        </div>
+                                        <div >
+                                            <label for="cmnt">Bcc</label><br>
+                                            <input  id="cmnt" styleclass="form-control" style="width: 100%; height: 35px;"/></br>
+                                        </div>
+                                        <div>
+                                              <label for="Subject">Subject</label>
+                                              <apex:inputText value="{!emailsubject}" id="Subject" style="width: 100%; height: 35px;" styleclass="form-control"/>
+                                         </div> 
+                                        <div>
+                                            <label for="txtrlt"></label><br>
+                                            <apex:inputtextarea id="txtrlt" richtext="true" value="{!body}"/></br>
+                                        </div>
+                                        <div align ="right">
+                                             <apex:commandbutton value="Send" action="{!sendEmail}" style="background: rgb(0,112,210);color: antiquewhite;height: 44px;width: 95px;"/>
+                                        </div>
+                                        </apex:actionRegion>
+<!--                                     </form> -->
+                               </div>   
+                               
+                            </div>
+                        </div>
+                        
+                         <div class="tab-pane fade" id="collaborate">
+                            <div class="container">
+                                      <ul class="nav nav-tabs">
+                                        <li class="active"><a href="#post">Post</a></li>
+                                        <li><a href="#poll">Poll</a></li>
+                                      </ul>
+                            </div>
+                             <div class="tab-content">
+                               <div id="post" class="tab-pane fade in active" > 
+                                    <apex:actionRegion id="postid" >
+                                        <div class="form-group" >
+                                              <label for="toid">To : This contact</label><br>
+                                              <apex:inputTextarea id="toid" value="{!postCmnt}" richtext="true" /></br>
+                                         </div>
+                                         <div  align ="right">
+                                             <apex:commandbutton value="Share" action="{!Share}" style="height: 41px;width: 87px;background: rgb(0,112,210);color: antiquewhite;" rerender="none"/>
+                                        </div>
+                               </apex:actionRegion>
+                              </div>
+                              <div id="poll" class="tab-pane fade" > 
+                                    <apex:actionRegion id="pollid" >
+                                        <div>
+                                              <label for="toid">To : This contact</label><br></br>
+                                         </div>
+                                         <div>
+                                              <label for="queId">Question</label><br>
+                                               <apex:input type="text" id="queId"  style="width: 100%;height: 57px;" value="{!question}"/></br>
+                                         </div>
+                                          <div>
+                                              <label for="choice1">choice1</label><br>
+                                               <apex:input type="text" id="choice1" style="width: 100%;" value="{!choice1}"/></br>
+                                         </div>
+                                         <div>
+                                              <label for="choice2">choice2</label><br>
+                                               <apex:input type="text" id="choice2" style="width: 100%;" value="{!choice2}"/></br>
+                                         </div>
+                                         <div>
+                                              <label for="choice3">choice3</label><br>
+                                               <apex:input type="text" id="choice3" style="width: 100%;" value="{!choice3}"/></br>
+                                         </div>
+                                         <div  align ="right">
+                                             <apex:commandbutton value="Ask" action="{!ask}" style="height: 41px;width: 87px;background: rgb(0,112,210);color: antiquewhite;" rerender="pollid"/>
+                                        </div>
+                               </apex:actionRegion>
+                              </div>
+                              </div>
+                         </div>
+                     </div>
+                </div>
+                </div>
+                
+                
+               </apex:form>
+        </div>
+    <!--HANUMAN --> 
+    </html> 
+    <script>
+        function test()
+        {
+            test1();
+        }
+    </script>       
+</apex:page>

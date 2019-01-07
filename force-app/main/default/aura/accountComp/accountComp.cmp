@@ -1,0 +1,20 @@
+<aura:component >
+	<aura:attribute name="messages" type="String"
+        default="['You look nice today.',
+            'Great weather we\'re having.',
+            'How are you?']"/>
+    <h1>Hello Playground</h1>
+    <p>Silly fun with attributes and expressions.</p>
+    
+     <h2>List Items</h2>
+
+    <p><c:HelloIndia message="{!v.messages[0]}"/></p>
+    <p><c:HelloIndia message="{!v.messages[1]}"/></p>
+    <p><c:HelloIndia message="{!v.messages[2]}"/></p>
+    
+     <h2>List Iteration</h2>
+
+
+
+
+</aura:component>

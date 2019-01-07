@@ -1,0 +1,19 @@
+<apex:page Sidebar="False">
+  <h1>Hello</h1>  
+  {! $User.FirstName}
+  <p>Today's Date is {!today()}</p>
+  <p>Next week Today's Day is {!today()+7}</p>
+  <p> the year today is {!year(today())}</p>
+  <p>Towwomarow day is {! Day(Today())}</p>
+  <P> Find The Maximum in this number is {!Max(5,6,7,10,12,15,17)}</p>
+  {!if(Contains('salesforce.com','force.com'),'yep','no')}
+  {!IF(DAY(Today())>14,'After the 14th','before the 14th')}
+  <apex:pageBlock title="A Block Title " mode="inline edit">
+  <apex:pageBlockSection Title="A Title of block section">
+   I am Three component Deep!
+  </apex:pageBlockSection>
+  <apex:pageBlockSection title="A New Block Section" >
+  I am in new page block Section
+  </apex:pageBlockSection>
+  </apex:pageBlock>
+</apex:page>

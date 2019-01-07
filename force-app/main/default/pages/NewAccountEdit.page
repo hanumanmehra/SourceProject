@@ -1,0 +1,49 @@
+<apex:page controller="EditAccount" sidebar="false" tabStyle="Account" standardStylesheets="True">
+    <apex:sectionHeader title="Account Edit" subtitle="{!acc.Name}"/>
+    <apex:form >
+        <apex:pageBlock title="Account Edit" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!Save}" id="SaveBtn" value="Save"/>
+                <apex:commandButton rerender="none" id="CancelBtn" value="Cancel" immediate="true" action="{!cancel}">
+                </apex:commandButton>
+            </apex:pageBlockButtons>
+            <apex:pageblocksection columns="2">
+                <apex:inputField value="{!acc.name}"/>
+                <apex:inputField value="{!acc.accountnumber}"/>
+                <apex:inputField value="{!acc.Active__c}"/>
+                <apex:inputField value="{!acc.AccountSource}"/>
+                <apex:inputField value="{!acc.Site}"/>
+                <apex:inputField value="{!acc.ownership}"/>
+                <apex:inputField value="{!acc.shippingStreet}"/>
+                <apex:inputField value="{!acc.AnnualRevenue}"/>
+                <apex:inputField value="{!acc.shippingCity}"/>
+                <apex:inputField value="{!acc.website}"/>
+                <apex:inputField value="{!acc.shippingState}"/>
+                <apex:inputField value="{!acc.UpsellOpportunity__c}"/>
+                <apex:inputField value="{!acc.shippingCountry}"/>
+                <apex:inputField value="{!acc.Type}"/>
+                <apex:inputField value="{!acc.phone}"/>
+                <apex:inputField value="{!acc.TradeStyle}"/>
+                <apex:inputField value="{!acc.rating}"/>
+                <apex:inputField value="{!acc.NumberofLocations__c}"/>
+                <apex:inputField value="{!acc.TickerSymbol}"/>
+                <apex:inputField value="{!acc.BillingStreet}"/>
+                <apex:inputField value="{!acc.BillingCity}"/>
+                <apex:inputField value="{!acc.SLAExpirationDate__c}"/>
+                <apex:inputField value="{!acc.BillingState}"/>
+                <apex:inputField value="{!acc.SLA__c}"/>
+                <apex:inputField value="{!acc.BillingCountry}"/>
+                <apex:inputField value="{!acc.YearStarted}"/>
+                <apex:inputField value="{!acc.CustomerPriority__c}"/>
+                <apex:inputField value="{!acc.Industry}"/>
+                <apex:inputField value="{!acc.Description}"/>
+                <apex:inputField value="{!acc.DunsNumber}"/>
+                <apex:inputField value="{!acc.NumberOfEmployees}"/>
+                <apex:inputField value="{!acc.NaicsCode}"/>
+                <apex:inputField value="{!acc.NaicsDesc}"/>
+                <apex:inputField value="{!acc.Sic}"/>
+                <apex:inputField value="{!acc.SicDesc}"/>
+            </apex:pageblocksection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

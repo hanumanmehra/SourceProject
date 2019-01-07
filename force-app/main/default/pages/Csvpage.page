@@ -1,0 +1,6 @@
+<apex:page controller="PaginationController" cache="true" contentType="text/csv#filename.csv" language="en-US" readOnly="true">
+    Account id,Name,Site,Phone,Type
+    <apex:repeat value="{!listasobject}" var="liso">
+        {!liso.id},{!liso.name},{!liso.Site},{!liso.Phone},{!liso.Type}
+    </apex:repeat>
+</apex:page>

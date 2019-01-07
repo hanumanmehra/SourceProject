@@ -1,0 +1,78 @@
+<aura:component >
+	<!-- PAGE HEADER -->
+    <div class="slds-page-header" role="banner">
+      <div class="slds-grid">
+        <div class="slds-col">
+          <p class="slds-text-heading--label">Expenses</p>
+          <h1 class="slds-text-heading--medium">My Expenses</h1>
+        </div>
+      </div>
+    </div>
+    <!-- / PAGE HEADER -->
+
+    <!-- NEW EXPENSE FORM -->
+    <div class="slds-col slds-col--padded slds-p-top--large">
+
+
+        <div aria-labelledby="newexpenseform">
+
+  <!-- BOXED AREA -->
+  <fieldset class="slds-box slds-theme--default slds-container--small">
+
+    <legend id="newexpenseform" class="slds-text-heading--small 
+      slds-p-vertical--medium">
+      Add Expense
+    </legend>
+
+    <!-- CREATE NEW EXPENSE FORM -->
+    <form class="slds-form--stacked">
+
+      <div class="slds-form-element slds-is-required">
+          <div class="slds-form-element__control">
+              <ui:inputText aura:id="expname" label="Expense Name"
+                  class="slds-input"
+                  labelClass="slds-form-element__label"
+                  value="{!v.Store_Location__c.Name}"
+                  required="true"/>
+          </div>
+     </div>
+
+      <div class="slds-form-element">
+          <div class="slds-form-element__control">
+              <ui:inputText aura:id="client" label="City"
+                  class="slds-input"
+                  labelClass="slds-form-element__label"
+                  value="{!v.Store_Location__c.City__c}"
+                  placeholder="ABC Co."/>
+          </div>
+      </div>
+
+      <div class="slds-form-element">
+          <div class="slds-form-element__control">
+              <ui:inputtext aura:id="expdate" label="Street"
+                  class="slds-input"
+                  labelClass="slds-form-element__label"
+                  value="{!v.Store_Location__c.Street__c}"/>
+          </div>
+      </div>
+
+
+      <div class="slds-form-element">
+          <ui:button label="Create Expense"
+              class="slds-button slds-button--brand"
+              press="{!c.clickCreateExpense}"/>
+      </div>
+
+    </form>
+    <!-- / CREATE NEW EXPENSE FORM -->
+
+  </fieldset>
+  <!-- / BOXED AREA -->
+
+</div>
+<!-- / CREATE NEW EXPENSE -->
+
+
+    </div>
+    <!-- / NEW EXPENSE FORM -->
+</aura:component>

@@ -1,0 +1,74 @@
+<aura:component controller="accountDetaillightController" access="global">
+     <ltng:require styles="/resource/slds/assets/styles/salesforce-lightning-design-system.min.css" />
+    <aura:attribute name="formId" type="Id"/>
+    <aura:attribute name="account" type="Account" default="{ 'sobjectType': 'Account' }"/>
+    <aura:attribute name="AccountContVal" type="Account[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.getHMAccount}"/>
+    <aura:attribute name="valueTableContValSizeFlag" type="Integer"/>
+    <aura:handler name="init" value="{!this}" action="{!c.accountContValList}"/>
+    <div aura:id="contractDiv">
+        <div class="" role="banner">
+            <div class="required1">
+                <div class="slds-col">
+                    <h2 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" style="color:#0A2638;" title="Record Title"> Account</h2>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid DivPad1">
+            <div class="slds-col--padded slds-size--1-of-1">
+                <button class="slds-button slds-button--neutral" style="float:right;" onclick="{!c.addAccValRow}">Add</button>
+                <button class="slds-button slds-button--neutral Button1" style="float:right;" onclick="{!c.saveAccountTable}">Save</button>
+            </div>
+        </div>
+    </div>
+    <div class="slds-panel" > 
+    	 <div class="slds">
+            <div class="slds-scrollable--x">
+                <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+                     <thead>
+                        <tr class="slds-text-heading--label">
+                        	<th scope="col" >
+                                <span class="slds-truncate" >Name</span>
+                            </th>
+                            <th scope="col" >
+                            	<span class="slds-truncate" >Account Number</span>
+                            </th>
+                            <th scope="col" >
+                            	<span class="slds-truncate" >SLAExpirationDate</span>
+                            </th>
+                            <th scope="col" >
+                            	<span class="slds-truncate" >Phone</span>
+                            </th>
+                            
+                         </tr>
+                    </thead>
+                    <tbody>
+                       <aura:iteration items="{!v.AccountContVal}" var="actable" indexVar="indx">
+                            <tr class="slds-hint-parent">
+                                <td >
+                                    <div class="slds-truncate">
+  
+                                        <!--<input type="text" class="slds-input" value="{!v.account.Name}" rows="1"></input>-->
+                                        <ui:inputText class="slds-input" value="{!actable.Name}"/>
+
+                                    </div>
+                                </td>
+                                <td >
+                                    <div class="slds-truncate"><input type="text" class="slds-input" value="{!actable.AccountNumber}" rows="1"></input></div>
+                                </td>
+                                <td >
+                                     <div class="slds-truncate"><ui:inputDate class="slds-input" value="{!actable.SLAExpirationDate__c}" displayDatePicker="true" /></div>
+                                </td>
+                                 <td >
+                                    <div class="slds-truncate"><input type="phone" class="slds-input" value="{!actable.Phone}" rows="1"></input></div>
+                                </td>
+                                
+                            </tr>
+                       </aura:iteration>
+                    </tbody>
+                </table>
+             </div>
+        </div>
+    </div>
+	
+</aura:component>

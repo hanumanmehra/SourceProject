@@ -1,0 +1,38 @@
+<apex:page controller="exampleCon">
+    <apex:form >
+        <!-- Define the JavaScript function sayHello-->
+        <apex:actionFunction name="sayHello" action="{!sayHello}" rerender="out" status="myStatus"/>
+    </apex:form>
+
+    <apex:outputPanel id="out">
+    <apex:outputText value="Hello "/>
+    <apex:outputPanel id="counter">
+    <apex:outputText value="Click me!:{!count}"/>
+    <apex:actionSupport event="onclick" action="{!incrementcounter}" reRender="counter" status="counterStatus" disabled="true" disableDefault="false"/>
+    </apex:outputPanel>
+    <apex:actionStatus startText="requesting..." id="CounterStatus" stopText="{stop}">
+        <apex:facet name="stop">{!username}</apex:facet>
+    </apex:actionStatus>
+    </apex:outputPanel>
+            
+    <!-- Call the sayHello JavaScript function using a script element-->
+    <script>window.setTimeout(sayHello,2000)</script>
+            
+    <p><apex:outputText value="Clicked? {!state}" id="showstate" /></p> 
+            
+    <!-- Add the onclick event listener to a panel. When clicked, the panel triggers
+    the methodOneInJavascript actionFunction with a param -->
+    <apex:outputPanel onclick="methodOneInJavascript('Yes!')" styleClass="btn"> 
+        Click Me 
+    </apex:outputPanel>
+    <apex:form >
+
+    <apex:actionFunction action="{!methodOne}" name="methodOneInJavascript" rerender="showstate" status="{!State}" timeout="50">
+        <apex:param name="firstParam" assignTo="{!state}" value="" />
+    </apex:actionFunction>
+    </apex:form>
+    <apex:form >
+    <apex:outputText value="Watch this counter:{!count}" id="counter"></apex:outputText>
+    <apex:actionPoller action="{!IncrementCounter}" rerender="counter" interval="25"/>
+    </apex:form>
+</apex:page>

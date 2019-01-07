@@ -1,0 +1,56 @@
+<apex:page controller="BoxiNtegrationController">
+	 <html>
+        <title>Box.com integration</title>
+        <apex:form >
+            <apex:pageBlock >
+                <apex:actionRegion >
+                    <apex:commandbutton action="{!DriveAuth}" value="Box Drive Authentication" />
+                    <br/><br/><br/>
+                    <apex:inputFile value="{!file}" contentType="{!filetype}" filename="{!filename}"/>
+                    <apex:commandbutton action="{!uploadFile}" value="Upload File" />
+                </apex:actionRegion>
+            </apex:pageBlock>
+        </apex:form>
+        
+        <apex:form >  
+            <apex:actionFunction name="fileDelete" action="{!deleteFile}" rerender="table">
+                <apex:param value="" name="fileDel" assignTo="{!fileId}" />
+            </apex:actionFunction>
+               
+            <apex:actionFunction name="FileLoad" action="{!DownloadFile}" onComplete="downloadUrl('{!dwnldUrl}');" rerender="table"> 
+                <apex:param value="" name="LoadFile" assignTo="{!fileId}" />
+            </apex:actionFunction>
+            
+            <apex:pageblock id="pgblock">  
+                <apex:commandbutton action="{!allFiles}" value="Fetch All Files" rerender="table"/>
+                
+                <apex:actionRegion id="regn">
+                    <apex:pageBlockTable id="table" value="{!boxWrapperList}" var="w">
+                        <apex:column value="{!w.file_Name}"/>
+                        <apex:column >
+                            <apex:commandlink value="Delete File" onClick="delFile('{!w.file_Id}'); return false;"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:commandlink value="Download File" onClick="fileDownload('{!w.file_Id}'); return false;" />
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:actionRegion>
+            </apex:pageblock>
+        </apex:form>  
+        <script type="text/javascript">
+            function delFile(fid)
+            {
+                fileDelete(fid);
+            }
+            function fileDownload(fid)
+            {
+		        FileLoad(fid);
+		    }
+		    function downloadUrl(url)
+		    {
+		    	if(url != undefined && url.trim().length>0)
+		    		window.open(url, '_self');
+		    }
+        </script>
+    </html>
+</apex:page>

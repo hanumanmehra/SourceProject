@@ -1,0 +1,83 @@
+<apex:page standardController="Contact" sidebar="false" docType="HTML-5.0" standardStylesheets="True" tabstyle="Account" id="pagemsgId" extensions="AccountDetailController">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
+    <script>
+        function js1(AccId)
+        {
+            console.log("/apex/ContactNewPage?Id="+AccId);
+            window.open("/apex/ContactNewPage");
+        }
+    </script>
+    
+    <script type='text/javascript'>
+        function openWindow()
+        {
+            var myWindow = window.open("https://ballifb-dev-ed--c.ap2.visual.force.com/apex/InsertAccount_Page", "Insert Account", "width=900,height=500");
+        }
+        function remoteMethod()
+        {
+            var selectValue =  $('[id$="txt"]').val();
+            console.log('selectValue--'+selectValue);
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.AccountDetailController.remoteAccount}',selectValue, 
+                function(result, event)
+                {
+                    if(result != null)
+                    {
+                        initMap(result);
+                    }
+                   else if (event.type === 'exception') 
+                   {
+                       alert('Exception Here');
+                   } 
+               }
+            );
+        }
+        function initMap(result)
+        {
+            var availableTags  = [];
+            for(var i = 0 ; i< result.length ; i++)
+            {
+            availableTags.push(result[i].Name);
+            }
+           $('[id$="txt"]').autocomplete({
+            source: availableTags
+           });
+        }
+    </script> 
+    
+    <apex:form >  
+        <apex:input type="text" id="txt"  onkeyup="remoteMethod()"/>
+        <apex:pageBlock id="block">
+            <apex:pageBlockSection id="blockSection" columns="2">
+                <apex:pageBlockSectionItem id="firstItem">
+                    <span id="remoteAcctId"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="secondItem">
+                    <apex:outputText id="acctNumEmployees"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+       </apex:pageBlock>
+         
+        <apex:inputtext value="{!inputvalue}" id="check" />
+        <apex:commandButton value="search" action="{!inputmethod}" /> 
+        <apex:pageblock title="Accounts"> 
+            <apex:repeat value="{!acclist}" var="ac">
+                 <apex:pageBlockSection id="section1" columns="2" collapsible="true" title="{!ac.Name}">
+                 <!--<apex:outputPanel rendered="{!if(contactmap[ac] != null,true,false)}">-->
+                     <apex:pageblocktable value="{!contactmap[ac]}"  var="con"> 
+                         <apex:column value="{!con.Name}"/>
+                         <apex:column value="{!con.Email}"/>
+                         <apex:column value="{!con.Phone}"/>
+                         <apex:column value="{!con.Account.Name}"/>
+                     </apex:pageblocktable> 
+                     <!--</apex:outputPanel>-->
+                     <apex:commandbutton value="Add new" onclick="js1('{!ac.Id}'),alert('{!ac.Id}')"/>
+                 </apex:pageBlockSection>
+            </apex:repeat>     
+         </apex:pageblock>
+         
+    </apex:form>
+ 
+</apex:page>

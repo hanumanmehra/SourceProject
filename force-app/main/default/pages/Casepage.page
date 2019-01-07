@@ -1,0 +1,12 @@
+<apex:page controller="CaseController" sidebar="false">
+    <apex:form >
+        <apex:pageblock Id="pgblockId" >
+				<span Style="margin-left: 6%;" ><b>Select Record type</b></span>    
+				<apex:selectlist size="1" value="{!selectedRecordType}" Style="margin-left: 6%;"> 
+					<apex:selectOption itemValue="None" itemLabel="None"  /> 
+					<apex:selectoptions value="{!Items}" />
+					<apex:actionsupport event="onchange"  action="{!fieldsOfCases}" rerender="None"/> 	      
+				</apex:selectlist>		
+			</apex:pageblock>
+    </apex:form>
+</apex:page>

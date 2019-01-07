@@ -1,0 +1,485 @@
+<apex:page standardStylesheets="false" showheader="true"  standardController="Opportunity"  sidebar="false"  id="pg"  extensions="SFSPConnector_V2">
+    
+    <apex:form >
+        <head>
+            <apex:includeScript value="{!URLFOR($Resource.FileStructure, 'FileStructure/jquery.js')}"/>
+            <apex:includeScript value="{!URLFOR($Resource.treeJquery, '/vakata-jstree-e2596f5/libs/jquery.js')}"/>
+            <apex:includeScript value="{!URLFOR($Resource.treeJquery, '/vakata-jstree-e2596f5/dist/jstree.min.js')}"/>
+            <apex:stylesheet value="{!URLFOR($Resource.treeJquery, '/vakata-jstree-e2596f5/dist/themes/default/style.min.css')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.FileStructure, 'FileStructure/bootstrap.min.css')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.FileStructure, 'FileStructure/bootstrap-theme.min.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.FileStructure, 'FileStructure/bootstrap.min.js')}"/>
+            <apex:includeScript value="{!URLFOR($Resource.FileStructure, 'FileStructure/jquery.tablesorter.min.js')}"/>
+            <apex:stylesheet value="{!URLFOR($Resource.FileStructure, 'FileStructure/theme.blue.css')}" />
+            
+            <style type="text/css">
+            .classname {
+                -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+                box-shadow:inset 0px 1px 0px 0px #ffffff;
+                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #b3e0e0) );
+                background:-moz-linear-gradient( center top, #ededed 5%, #b3e0e0 100% );
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#b3e0e0');
+                background-color:#ededed;
+                -webkit-border-top-left-radius:6px;
+                -moz-border-radius-topleft:6px;
+                border-top-left-radius:6px;
+                -webkit-border-top-right-radius:6px;
+                -moz-border-radius-topright:6px;
+                border-top-right-radius:6px;
+                -webkit-border-bottom-right-radius:6px;
+                -moz-border-radius-bottomright:6px;
+                border-bottom-right-radius:6px;
+                -webkit-border-bottom-left-radius:6px;
+                -moz-border-radius-bottomleft:6px;
+                border-bottom-left-radius:6px;
+                text-indent:0;
+                border:1px solid #dcdcdc;
+                display:inline-block;
+                color:#777777;
+                font-family:arial;
+                font-size:15px;
+                font-weight:bold;
+                font-style:normal;
+                height:28px;
+                line-height:28px;
+                width:133px;
+                text-decoration:none;
+                text-align:center;
+                text-shadow:1px 1px 0px #ffffff;
+            }
+            .classname:hover {
+                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b3e0e0), color-stop(1, #ededed) );
+                background:-moz-linear-gradient( center top, #b3e0e0 5%, #ededed 100% );
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b3e0e0', endColorstr='#ededed');
+                background-color:#b3e0e0;
+            }.classname:active {
+                position:relative;
+                top:1px;
+            }
+            /*li.myimg i{
+            background:none !important;
+            background-position: none !important;
+            background:url(/resource/1405492549000/pdficon) !important;
+            
+            background-size:24px 24px;
+            }*/
+            
+            </style>
+            <style>
+                .ActiveIcon{
+                    border:1px solid green;
+                }
+                .inActiveIcon{
+                    border:10px solid red;
+                }
+                .btn2 {
+                    display: inline-block;
+                    padding: 3px 12px;
+                    margin-bottom: 0;
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 1.42857143;
+                    text-align: center;
+                    white-space: nowrap;
+                    vertical-align: middle;
+                    -ms-touch-action: manipulation;
+                    touch-action: manipulation;
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    background-image: none;
+                    border: 1px solid transparent;
+                    border-radius: 4px;
+                }
+                .jstree{    height: 370px; overflow: auto;}
+                
+                .imgcls {
+                    padding: 5px;
+                    border: 2px solid transparent;
+                    display: inline-block;
+                     border-radius: 5px;
+                }
+                .imgcls:focus {
+                    border: 2px solid #40af9a;
+                    display: inline-block;
+                    outline: 0;
+                }
+                .fileIconClass{
+                    background-position: -106px -69px !important;
+                }
+            </style>
+            
+            <script>           
+                function redirect(){
+                    if('{!JSENCODE($CurrentPage.parameters.isRootFolderCreated)}' == null || '{!JSENCODE($CurrentPage.parameters.isRootFolderCreated)}' == ''){
+                        createRoot();
+                    }
+                }
+                
+                function getFolderId(folderId){         
+                    $("[id$='folderHidden']").val(folderId);
+                    openFilesandFolder();
+                }
+                function AddFolder(){
+                    $("[id$='createNewFolderDiv']").css('display', 'block');
+                    $("[id$='moveFolderOption']").css('display', 'None');  
+                    $("[id$='tablediv']").css('display', 'None'); 
+                    $("[id$='deleteFolderOption']").css('display', 'None'); 
+                    $("[id$='deltablediv']").css('display', 'None');
+                    $("[id$='renameFolderDiv']").css('display', 'None');  
+                    $("[id$='FileUpload']").css('display', 'None'); 
+                    $("[id$='fileFolderListDiv']").css('display', 'None');
+                    $("[id$='pagemsgDiv']").css('display', 'None'); 
+                }
+                function MoveFolder(){
+                   OpenFileFolderForMoveShow();  
+                }
+                
+                function Movechildfolder(){
+                   $("[id$='createNewFolderDiv']").css('display', 'None');
+                   $("[id$='tablediv']").css('display', 'block');  
+                   $("[id$='moveFolderOption']").css('display', 'block');   
+                   $("[id$='movFolderPanelId']").css('display', 'block');   
+                   $("[id$='deleteFolderOption']").css('display', 'None'); 
+                   $("[id$='deltablediv']").css('display', 'None');
+                   $("[id$='renameFolderDiv']").css('display', 'None');
+                   $("[id$='FileUpload']").css('display', 'None');  
+                   $("[id$='fileFolderListDiv']").css('display', 'None');  
+                   $("[id$='pagemsgDiv']").css('display', 'None'); 
+                }
+                 
+                function DeleteFolder(){
+                    openfileforDeleteOfThisFolder();
+                    //alert('open folder');  
+                }
+                function Showchildfolder(){
+                    $("[id$='createNewFolderDiv']").css('display', 'None');
+                    $("[id$='moveFolderOption']").css('display', 'None');  
+                    $("[id$='tablediv']").css('display', 'None');   
+                    $("[id$='deleteFolderOption']").css('display', 'block'); 
+                    $("[id$='deltablediv']").css('display', 'block');
+                    $("[id$='renameFolderDiv']").css('display', 'None');  
+                    $("[id$='FileUpload']").css('display', 'None'); 
+                    $("[id$='fileFolderListDiv']").css('display', 'None');
+                    $("[id$='pagemsgDiv']").css('display', 'None'); 
+                }
+                function deleteFileFolder(){
+                    var r=confirm("Are you sure?");
+                    if(r==true)
+                    {
+                        DeleteThisFolder();
+                    }
+                    else(r==false)
+                    {
+                        parent.child.close();
+                    }     
+                }
+                 
+                function renameFolderDiv(){
+                    $("[id$='renameFolderDiv']").css('display', 'block');
+                    $("[id$='createNewFolderDiv']").css('display', 'None');
+                    $("[id$='moveFolderOption']").css('display', 'None');  
+                    $("[id$='tablediv']").css('display', 'None');   
+                    $("[id$='deleteFolderOption']").css('display', 'None'); 
+                    $("[id$='deltablediv']").css('display', 'None');
+                    $("[id$='FileUpload']").css('display', 'None');   
+                    $("[id$='fileFolderListDiv']").css('display', 'None'); 
+                    $("[id$='pagemsgDiv']").css('display', 'None'); 
+                }
+                
+      
+                function uploadFileDiv(){
+                    actionUploadFile();
+                }
+     
+                function uploadFile(){          
+                    $("[id$='createNewFolderDiv']").css('display', 'None');
+                    $("[id$='moveFolderOption']").css('display', 'None');  
+                    $("[id$='tablediv']").css('display', 'None');   
+                    $("[id$='deleteFolderOption']").css('display', 'None'); 
+                    $("[id$='deltablediv']").css('display', 'None');
+                    $("[id$='FileUpload']").css('display', 'block');
+                    $("[id$='renameFolderDiv']").css('display', 'None'); 
+                    $("[id$='fileFolderListDiv']").css('display', 'None'); 
+                    $("[id$='pagemsgDiv']").css('display', 'None');
+                }
+                
+                function SelectedFoldersChild(){
+                    openFilesandFolder();
+                }
+                
+                function Childfoldersandfiles(){
+                    $("[id$='createNewFolderDiv']").css('display', 'None');
+                    $("[id$='moveFolderOption']").css('display', 'None');  
+                    $("[id$='tablediv']").css('display', 'None');   
+                    $("[id$='deleteFolderOption']").css('display', 'None'); 
+                    $("[id$='deltablediv']").css('display', 'None');
+                    $("[id$='FileUpload']").css('display', 'None');
+                    $("[id$='renameFolderDiv']").css('display', 'None'); 
+                    $("[id$='fileFolderListDiv']").css('display', 'block'); 
+                    $("[id$='pagemsgDiv']").css('display', 'None');
+                }
+                
+                window.onload = function() {
+                   redirect();
+                }            
+            </script>
+        </head>
+    
+        <apex:pageBlock id="PgBlockId">
+            
+            <div id ="pagemsgDiv"  style="display:block;">
+                <apex:pagemessages />
+            </div>
+            <div class="container" style="padding-left:0px;width:100%;" id="mainDiv" >
+                <apex:actionFunction name="createRoot" action="{!createRootFolder}" oncomplete="javascript:reload();" />
+                <apex:actionFunction name="OpenFileFolderForMoveShow" reRender="accsTableMove,movFolderPanelId,SelectedFolderLable" action="{!openFilesFoldersForMove}" oncomplete="Movechildfolder()" / >
+                <apex:actionFunction name="openFilesandFolder" reRender="filesFoldersTable,widePanelId,SelectedFolderLable" action="{!openFilesFoldersForMove}" oncomplete="Childfoldersandfiles()" / >
+                <apex:actionFunction name="openfileforDeleteOfThisFolder" reRender="accsTableDelete,deleteFolderOptionPanel,deleteFolderPanel,SelectedFolderLable" action="{!openOfThisFolder}" oncomplete="Showchildfolder()" / >
+                <apex:actionFunction name="DeleteThisFolder"  action="{!deleteFolder}" / >
+                <apex:actionFunction name="actionUploadFile" action="{!uploadFile}" rerender="uploadfilePanel,SelectedFolderLable" oncomplete="uploadFile()"/>
+                <div class="row" >
+                    <div class="col-md-3 col-xs-3 col-sm-3 col-lg-3" style="height:800px; overflow:auto">
+                        <apex:inputhidden id="folderHidden" value="{!selectedFolderId}" />    
+                        <apex:dynamicComponent componentValue="{!gadgetHTMLContent}"/> 
+                       
+                    </div>
+                    <div class="col-md-9  col-xs-9 col-sm-9 col-lg-9" style="border-left:1px solid;height:380px; overflow:auto">
+                        <div class="row" style=" margin-bottom:8px" >
+                            <div class="col-md-1 col-xs-1 col-sm-1 col-lg-1" style="valign:bottom">
+                                <a href="javascript:void(0);" class="imgcls">
+                                    <apex:image id="addFolderIcon"  value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/AddFolder.png')}" onclick="AddFolder()"  width="40px" height="40px" title="Add Folder"/>
+                                </a>
+                            </div>
+                            <div class="col-md-1 col-xs-1 col-sm-1 col-lg-1" style="valign:bottom">
+                                <a href="javascript:void(0);" class="imgcls">
+                                    <apex:image id="moveFolderIcon" value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/movefolder.png')}" onclick="MoveFolder()" width="40px" height="40px" title="Move File / Folder"/>
+                                </a>
+                            </div>
+                            <div class="col-md-1 col-xs-1 col-sm-1 col-lg-1" style="valign:bottom">
+                                <a href="javascript:void(0);" class="imgcls">
+                                    <apex:image value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/deletefolder.png')}" onclick="DeleteFolder()" width="40px" height="40px" title="Delete File / Folder"/>
+                                </a>
+                            </div>
+                            <div class="col-md-1 col-xs-1 col-sm-1 col-lg-1" style="valign:bottom">
+                                <a href="javascript:void(0);" class="imgcls">
+                                    <apex:image value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/Uploadfile.png')}" onclick="uploadFileDiv()" width="40px" height="40px" title="Upload File"/>
+                                </a>
+                            </div>
+                            <div class="col-md-1 col-xs-1 col-sm-1 col-lg-1" style="valign:bottom">
+                                <a href="javascript:void(0);" class="imgcls">
+                                    <apex:image value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/Rename.png')}" onclick="renameFolderDiv()" width="40px" height="40px" title="Rename Folder"/>
+                                </a>
+                            </div>
+                        </div> 
+                        
+                        <div  style=" margin-bottom:8px; padding-left:10px; padding-top:5px;background-color:rgb(215, 230, 230);"  >
+                            <apex:outputLabel id="SelectedFolderLable">{!selectedFolderName}</apex:outputLabel>   
+                        </div>
+                        
+                        <!-- Create New Folder -->
+                        <div id="createNewFolderDiv" style="display:none;margin-top:23px; background-color:#f2f3f3; border:1px solid #e0e3e5 ;width:100%" >
+                            <div class="row" style="padding-top:23px;padding-left:10px" >
+                                <div class="col-md-2 col-xs-2 col-sm-3 col-lg-2" style="valign:bottom">
+                                    <div class="form-group">
+                                        <label >Folder Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4    ">
+                                    <div class="form-group">
+                                        <apex:inputfield value="{!newFolder.name}" styleclass="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-2 col-sm-3 col-lg-2" style="valign:bottom">
+                                    <div class="form-group">
+                                        <apex:commandButton value="Create"  style="padding:6px"   action="{!createNewFolder}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                      <!-- Move Files Option and list -->
+                            
+                        <div id="moveFolderOption" style="display:none;margin-top:0px; width:100%" >
+                            <apex:outputPanel layout="block" style="padding-top:0px;padding-left:0px" styleclass="row" id="moveFolderOptionPanel"  >
+                                <div class="col-md-2 col-xs-2 col-sm-3 col-lg-2" style="valign:bottom">
+                                    <div class="form-group">
+                                        <label >Move to folder</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-2 col-sm-3 col-lg-2" style="valign:bottom">
+                                    <div class="dropdown">
+                                        <apex:selectList value="{!selectedFolderToMoveIn}" size="1" styleclass="form-control"  >
+                                            <apex:selectOptions value="{!folderOption}"> </apex:selectOptions>
+                                        </apex:selectList>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-2 col-sm-3 col-lg-2" style="valign:bottom">
+                                    <div class="form-group">
+                                        <apex:commandButton value="Move"  style="padding:6px" action="{!moveFolder}" />
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                           <!-- <br/> -->
+                        <div id ="tablediv"  style="display:none;" class="col-sm-12"> 
+                            <apex:outputPanel layout="block" styleclass="row" id="movFolderPanelId"  >
+                                <script>
+                                    $(document).ready(function()
+                                    {
+                                          $("[id$='accsTableMove']").tablesorter({theme: 'blue'});
+                                    });
+                                </script>
+                                <div class="table-responsive">
+                                    <apex:datatable value="{!listOfMoveFold_Wr}" var="mvFile" id="accsTableMove" styleclass="tablesorter">
+                                        <apex:column headerValue="Action">
+                                            <apex:inputCheckbox value="{!mvFile.isSelected}"/>
+                                        </apex:column>
+                                        <apex:column style="max-width: 136px;overflow: hidden ;text-overflow: ellipsis ;"  headerValue="File/Folder Name">
+                                            <apex:image style="vertical-align: sub;" rendered="{!if(mvFile.type=='folder',true, false)}" value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/foldericon.png')}" width="20px" height="20px"/>
+                                            <apex:image style="vertical-align: sub;" rendered="{!if(mvFile.type=='file',true, false)}" value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/fileicon.png')}" width="20px" height="20px"/>
+                                            {!mvFile.name} 
+                                        </apex:column>
+                                        <apex:column style="max-width: 200px;overflow: hidden;text-overflow: ellipsis ;"  value="{!mvFile.path}" headerValue="Path"/>
+                                        <apex:column headerValue="Uploaded Date" >
+                                            <apex:outputText value="{0, date, MMMM d','  yyyy}" >
+                                                <apex:param value="{!mvFile.files.createddate}" />
+                                            </apex:outputText>
+                                        </apex:column>
+                                        <apex:column value="{!ROUND(mvFile.files.File_Size__c/1024,2)} kb" headerValue="File Size" rendered="{!if(mvFile.type == 'file' && mvFile.type !='folder', true, false)}"/>
+                                        <apex:column value="{!mvFile.filesize}" headerValue="File Size" rendered="{!if(mvFile.type == 'file', false, true)}"/>
+                                        <apex:column headerValue="URL" >
+                                            <apex:outputpanel rendered="{!if(mvFile.type=='file',true, false)}">
+                                                <a href="{!mvFile.files.URL__c}" target="_open">{!mvFile.files.URL__c}</a>
+                                            </apex:outputpanel>
+                                        </apex:column>
+                                    </apex:datatable>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                        
+                        
+                        
+                        
+                        <!-- Delete Files  --> 
+                        <div id="deleteFolderOption" style="display:none;margin-top:0px; width:100%" >
+                            <apex:outputPanel layout="block" style="padding-top:0px;padding-left:0px" styleclass="row" id="deleteFolderOptionPanel"  >
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12" style="valign:bottom;text-align:center">
+                                    <div>
+                                        <input type="button" value="Delete File / Folder" onclick="deleteFileFolder()" class="btn2 btn-danger" /> 
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+           
+                        
+                        <div id ="deltablediv" Style="display:none;"> 
+                            <apex:outputpanel id="deleteFolderPanel">
+                                <script>
+                                    $(document).ready(function()
+                                    {
+                                          $("[id$='accsTabledel']").tablesorter({theme: 'blue'});
+                                    });
+                                </script>
+                                <div class="table-responsive">
+                                    <apex:datatable value="{!listOfDelFile_Wr}" var="delFile" id="accsTabledel" styleclass="tablesorter">
+                                        <apex:column headerValue="Action">
+                                            <apex:inputCheckbox value="{!delFile.isSelected}"/>
+                                        </apex:column>
+                                        <apex:column style="max-width: 136px;overflow: hidden;text-overflow: ellipsis ;"  headerValue="File/Folder Name">
+                                            <apex:image style="vertical-align: sub;" rendered="{!if(delFile.type =='folder',true, false)}" value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/foldericon.png')}" width="20px" height="20px"/>
+                                            <apex:image style="vertical-align: sub;" rendered="{!if(delFile.type =='file',true, false)}" value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/fileicon.png')}" width="20px" height="20px"/>
+                                            {!delFile.name}
+                                        </apex:column>
+                                        <apex:column title="{!delFile.path}" style="max-width: 200px;overflow: hidden;text-overflow: ellipsis ;"  value="{!delFile.path}" headerValue="Path"/>
+                                        <apex:column headerValue="Uploaded Date" >
+                                             <apex:outputText value="{0, date, MMMM d','  yyyy}" >
+                                                <apex:param value="{!delFile.file.createddate}" />
+                                             </apex:outputText>
+                                        </apex:column>
+                                        <apex:column value="{!ROUND(delFile.file.File_Size__c/1024,2)}  kb" headerValue="File Size" rendered="{!if(delFile.type == 'file' && delFile.type != 'folder' , true, false)}"/>
+                                        <apex:column value="{!delFile.filesize}" headerValue="File Size" rendered="{!if(delFile.type == 'file', false, true)}"/>
+                                        <apex:column headerValue="URL" >
+                                            <apex:outputpanel rendered="{!if(delFile.type=='file',true, false)}">
+                                                <a href="{!delFile.file.URL__c}" target="_open">{!delFile.file.URL__c}</a>
+                                            </apex:outputpanel>
+                                        </apex:column>
+                                    </apex:datatable>
+                                </div>
+                            </apex:outputpanel>
+                        </div>
+                    
+                        <div id="FileUpload" style="display:none;margin-top:23px; background-color:#f2f3f3; border:1px solid #e0e3e5 ;width:100%; height:5%" >
+                            <apex:outputPanel id="uploadfilePanel" layout="block" style="padding-top:0px;padding-left:0px" >
+                                <apex:iframe src="/apex/TM_SFSPSync__FileUploadonSharepoint?id={!selectedFolderId}" scrolling="true" id="theIframe"/>
+                            </apex:outputPanel>
+                        </div> 
+                    
+                        <!-- Rename Folder -->
+                        <div id="renameFolderDiv" style="display:none;margin-top:23px; background-color:#f2f3f3; border:1px solid #e0e3e5 ;width:100%" >
+                            <apex:outputPanel id="renameFolderPanel" layout="block" style="padding-top:0px;padding-left:0px" styleclass="row">
+                                <div class="row" style="padding-top:23px;padding-left:28px" >
+                                    <div class="col-md-2 col-xs-2 col-sm-3 col-lg-2" style="valign:bottom">
+                                        <div class="form-group">
+                                            <label >New Label</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4    ">
+                                        <div class="form-group">
+                                            <apex:inputtext value="{!NewLableFolder}" styleclass="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-xs-2 col-sm-3 col-lg-2" style="valign:bottom">
+                                        <div class="form-group">
+                                            <apex:commandButton value="Change Label"  style="padding:6px"   action="{!changeFolderLabel}" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div> 
+                        
+                       <div id="fileFolderListDiv" style="display:none;" class="col-sm-12">
+                           <apex:outputPanel layout="block" styleclass="row" id="widePanelId">
+                                <script>
+                                    $(document).ready(function()
+                                    {
+                                    $("[id$='filesFoldersTable']").tablesorter({theme: 'blue'});
+                                    });
+                                </script>
+                                <div class="table-responsive">
+                                    <apex:datatable value="{!listOfMoveFold_Wr}" var="ff" id="filesFoldersTable" styleclass="tablesorter">
+                                        <apex:column title="{!ff.name}" style="max-width: 136px;overflow: hidden;text-overflow: ellipsis ;"  headerValue="File/Folder Name">
+                                        <apex:image style="vertical-align: sub;" rendered="{!if(ff.type=='folder',true, false)}" value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/foldericon.png')}" width="20px" height="20px"/>
+                                        <apex:image style="vertical-align: sub;" rendered="{!if(ff.type=='file',true, false)}" value="{!URLFOR($Resource.SPSyncIcons, '/SPSyncIcons/fileicon.png')}" width="20px" height="20px"/>
+                                        {!ff.name}
+                                        </apex:column>
+                                        <apex:column style="max-width: 200px;overflow: hidden;text-overflow: ellipsis ;"  value="{!ff.path}" headerValue="Path"/>
+                                        <apex:column headerValue="URL" >
+                                            <apex:outputpanel rendered="{!if(ff.type=='file',true, false)}">
+                                                <a href="{!ff.files.URL__c}" target="_open">{!ff.files.URL__c}</a>
+                                            </apex:outputpanel>
+                                        </apex:column>
+                                        <apex:column headerValue="Uploaded Date" >
+                                            <apex:outputText value="{0, date, MMMM d','  yyyy}" >
+                                                <apex:param value="{!ff.files.createddate}" />
+                                            </apex:outputText>
+                                        </apex:column>
+                                     
+                                        <apex:column value="{!ROUND(ff.files.File_Size__c/1024,2)} kb" headerValue="File Size" rendered="{!if(ff.type == 'file', true, false)}"/>
+                                        <apex:column value="{!ff.filesize}" headerValue="File Size" rendered="{!if(ff.type == 'file', false, true)}"/>
+                                    </apex:datatable>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+        </apex:pageBlock>
+        <script>
+            $("#html1").jstree();
+        </script>
+    </apex:form>
+</apex:page>

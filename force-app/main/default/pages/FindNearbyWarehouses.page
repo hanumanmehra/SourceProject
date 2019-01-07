@@ -1,0 +1,7 @@
+<apex:page sidebar="false" showHeader="false">
+  standardController="Warehouse__c" recordSetVar="warehouses"
+extensions="WarehouseUtils">
+<!-- resources and styles go here -->
+<!-- JavaScript custom code goes here -->
+<!-- Google Maps target [div] goes here -->
+</apex:page>

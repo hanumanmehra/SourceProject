@@ -1,0 +1,242 @@
+<apex:page controller="PaginationController" sidebar="false" title="Account" standardStylesheets="false" tabStyle="Account" id="pageId" docType="HTML-5.0">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <!--<apex:pageMessages id="pagemsgId"/>-->
+    <script>
+        function myconfirm(selid) 
+        {
+            var r=confirm("Are you sure?");
+            if(r==true)
+            {
+                funname(selid);
+            }
+            else(r==false)
+            {
+                parent.child.close();
+            } 
+        }
+        function js2(alpid)
+        {
+            filname(alpid);
+        }
+        
+        function js3()
+        { 
+            methodthirdInJavascript();
+        }
+        
+        function js4()
+        { 
+            var id=document.getElementById('pageId:j_id28:myId:inputId').value;
+            if(id<0)
+            {
+                alert('Negetive page number are not allowed');
+            } 
+            acfun(id); 
+        }
+       
+        function ShowLoading() 
+        {
+            document.getElementById('blockbckanim').style.display="block";
+        }
+        function HideLoading()
+        {
+            document.getElementById('blockbckanim').style.display="none";
+        }
+        function selectAllCheckboxes(obj,receivedInputID) {
+            var inputCheckBox = document.getElementsByTagName("input");
+            console.log('---------inputCheckBox---'+inputCheckBox);
+            for(var i=0; i<inputCheckBox.length; i++) {
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1) {
+                    inputCheckBox[i].checked = obj.checked;
+                     console.log('---------inputCheckBox---'+inputCheckBox);
+                }
+            }
+        }
+        
+        function mastercheckbox() {
+            if($(".contactcb").length == $(".contactcb:checked").length)
+             {
+                $(".selectall").attr("checked", "checked");
+                console.log('--------1-----'+'{!checked}');
+            }
+            else 
+            { 
+                $(".selectall").removeAttr("checked"); 
+                console.log('--------2-----'+'{!checked}');
+                
+            }
+            
+        }
+        function js5(){
+        console.log('--------3-----');
+            fun5();
+            console.log('--------4-----');
+        }
+        
+        function alphabold(item) {
+            var a = document.getElementsByTagName('a');
+            console.log('-----a----'+a);
+            for (i = 0; i < a.length; i++) {
+            a[i].classList.remove('active');
+            console.log('----item----'+item);
+            }
+            item.classList.add('active');
+            console.log('----item1----'+item);
+        }
+    </script>
+    <style>
+        #blockbckanim {
+            background-color:rgba(196, 204, 220, 0.8);
+            width:100%;
+            height:100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 1000;
+            rgba(0, 0, 0, 0.71);
+            cursor: wait;
+        }
+        
+        .active 
+        {
+            color: yellow;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .color
+        {
+            color: blue;
+        }
+        a.clas:hover  
+        {
+            background-color: 'lightblue';
+            font-size: 20px;
+        }   
+    </style>
+    
+    <div id="blockbckanim" style="display:none">
+        <div id="apimgld"  >
+            <img src="/img/loading32.gif" style="height: 22px;  margin-left: 44%; margin-top: 52px;position: fixed;" />&nbsp;&nbsp;<br/>
+        </div>
+    </div>
+    <apex:sectionHeader Title="Accounts"/>
+    <apex:pageblock mode="detailpage">
+        
+       
+        <apex:form id="myId"> 
+             
+            <!-- Action function for selected list-->
+            <apex:actionFunction id="actStatus" name="methodthirdInJavascript" action="{!Nooflistrecord}" status="as2" reRender="myId" />
+            <!--Action function for number of page--> 
+            <apex:actionFunction id="actStatus1" name="acfun" action="{!getPageSet}" status="as2" reRender="myId" >
+                <apex:param name="a" assignTo="{!pageno}" value=""/>  
+            </apex:actionFunction>  
+            <!--Action function for delete account of page--> 
+            <apex:actionFunction name="funname" action="{!deleteacc}"  reRender="myId,pagemsgId"  status="as2" >
+                <apex:param name="as" assignto="{!selectid}" value=""/>
+            </apex:actionFunction>
+            
+             <apex:actionFunction id="actStatus5" name="fun5" action="{!processSelected}" reRender="myId,pagemsgId"> 
+             </apex:actionFunction>
+                                              
+            <apex:outputPanel style="float:right;text-bold:;" styleClass="panelclass">
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('A'),alphabold(this)" styleClass="clas">A</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('B'),alphabold(this)" styleClass="clas">B</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('C'),alphabold(this)" styleClass="clas">C</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('D'),alphabold(this)" styleClass="clas">D</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('E'),alphabold(this)" styleClass="clas">E</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('F'),alphabold(this)" styleClass="clas">F</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('G'),alphabold(this)" styleClass="clas">G</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('H'),alphabold(this)" styleClass="clas">H</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('I'),alphabold(this)" styleClass="clas">I</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('J'),alphabold(this)" styleClass="clas">J</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('K'),alphabold(this)" styleClass="clas">K</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('L'),alphabold(this)" styleClass="clas">L</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('M'),alphabold(this)" styleClass="clas">M</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('N'),alphabold(this)" styleClass="clas">N</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('O'),alphabold(this)" styleClass="clas">O</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('P'),alphabold(this)" styleClass="clas">P</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('Q'),alphabold(this)" styleClass="clas">Q</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('R'),alphabold(this)" styleClass="clas">R</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('S'),alphabold(this)" styleClass="clas">S</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('T'),alphabold(this)" styleClass="clas">T</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('U'),alphabold(this)" styleClass="clas">U</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('V'),alphabold(this)" styleClass="clas">V</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('W'),alphabold(this)" styleClass="clas">W</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('X'),alphabold(this)" styleClass="clas">X</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('Y'),alphabold(this)" styleClass="clas">Y</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('Z'),alphabold(this)" styleClass="clas">Z</a>&nbsp;  | &nbsp;
+                <a style="color: #015ba7; cursor:pointer" onclick="js2('ALL'),alphabold(this)" styleClass="clas">ALL</a>&nbsp;
+            </apex:outputpanel>
+            <apex:actionStatus id="as2" onStart="ShowLoading();" onstop="HideLoading();"/>
+            <apex:actionStatus id="as3" onStart="ShowLoading()"/> 
+            <apex:actionFunction action="{!filter}" name="filname" reRender="OPId" status="as2" oncomplete="mastercheckbox()">
+                <apex:param assignTo="{!alphabet}"  value="" name="para"/>
+            </apex:actionFunction>
+            <apex:outputpanel id="OPId">
+            <apex:pageblocktable value="{!wraplist}" var="acli" id="tableid"  >
+                <apex:column >
+                <apex:facet name="header"><apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId');mastercheckbox();js5()" styleClass="selectall" /></apex:facet>
+                    <apex:inputCheckbox id="inputId"  value="{!acli.checked}" onclick="mastercheckbox();js5()" styleClass="contactcb" >
+                    </apex:inputCheckbox>
+                </apex:column>
+                <apex:column headerValue="Action">
+                    <apex:outputLink title="" value="/apex/NewAccountEdit?id={!acli.wrapperac.id}" style="color:blue">Edit </apex:outputLink>
+                    &nbsp; | &nbsp;
+                    <!-- commandlink for delete record-->
+                    <apex:commandLink id="cmdId" onclick="myconfirm('{!acli.wrapperac.id}')" value="Del"  reRender="myId,pagemsgId" style="color:blue">          
+                    </apex:commandLink>
+                </apex:column> 
+                <apex:column headerValue="Account Name">
+                    <apex:outputLink value="/apex/NewAccount?id={!acli.wrapperac.Id}">{!acli.wrapperac.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column value="{!acli.wrapperac.Site}"/>
+                <apex:column value="{!acli.wrapperac.billingState}"/>
+                <apex:column value="{!acli.wrapperac.Phone}"/>
+                <apex:column value="{!acli.wrapperac.Type}"/>
+            </apex:pageblocktable> 
+           
+            
+            <apex:pageBlockSection >
+                <apex:outputPanel rendered="{!if(wraplist.size<=0,true,false)}" style="float:left">
+                    <apex:outputText value="No records to display."></apex:outputText>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            
+            <!--list of select option-->
+            <div class="row" align="left" draggable="false">
+                <div  class="col-sm-2">
+                    <apex:outputtext value="{!PageStartno} - {!PageEndno} of {!Totalsize}" rendered="{!if(wraplist.size<=0,false,true)}"/> &nbsp; 
+                    <apex:selectList value="{!Accept}" size="1" onchange="js3()" style="float:right;width: 106px;"  rendered="{!if(wraplist.size<=0,false,true)}">
+                        <apex:selectOptions value="{!Items}"/>   
+                    </apex:selectList>         
+                </div>
+                <div  class="col-sm-2">
+                    
+                </div>
+                
+                <!--command button for next,pre,last,first-->
+                <div class="col-sm-4">
+                    <apex:commandButton value="|<" action="{!first}" disabled="{!DisablePrevious}" title="First page" rerender="myId" status="as2" oncomplete="mastercheckbox()" rendered="{!if(wraplist.size<=0,false,true)}"/>
+                    <apex:commandButton value="<Previous" action="{!previous}" disabled="{!DisablePrevious}" title="Previous page" rerender="myId,tableid" status="as2" oncomplete="mastercheckbox()" rendered="{!if(wraplist.size<=0,false,true)}"/>
+                    <apex:commandButton value="Next>" action="{!next}" disabled="{!DisableNext}" title="Next page" rerender="myId,pagemsgId" status="as2" oncomplete="mastercheckbox()" rendered="{!if(wraplist.size<=0,false,true)}"/>
+                    <apex:commandButton value=">|" action="{!last}" disabled="{!DisableNext}" title="Last page" rerender="myId" status="as2" oncomplete="mastercheckbox()" rendered="{!if(wraplist.size<=0,false,true)}"/>
+                </div>
+                <!--page no input box--> 
+                 
+                    <div class="col-sm-2">
+                        <apex:commandButton value="Export Selected Accounts " action="{!export}" disabled="{!DisableExport}" onclick="js5()" rendered="{!if(wraplist.size<=0,false,true)}"/>
+                        <apex:outputText escape="false" value="<b>{!message}</b>"/>
+                    </div>
+                <div class="col-sm-2">
+                    <apex:outputPanel rendered="{!if(wraplist.size<=0,false,true)}">Page
+                        <apex:input id="inputId"  value="{!PageNumber}" size="0" onchange="js4()" type="number" style="font-family: inherit;font-size: small;line-height: inherit;width: 38px;"/>
+                        <apex:outputPanel >of {!TotalPages}</apex:outputPanel>
+                    </apex:outputPanel>  
+                </div>
+            </div>
+             </apex:outputpanel>
+        </apex:form>
+    </apex:pageblock>
+</apex:page>

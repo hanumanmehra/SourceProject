@@ -1,0 +1,27 @@
+<apex:page standardController="Account" tabstyle="Account">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+     <head>
+    <apex:stylesheet value="{!URLFOR($Resource.slds, 'assets/styles/salesforce-lightning-design-system.css')}" />
+    </head>
+    
+    <div class="Container" style="border-style: inherit">
+        <div class="slds-page-header" role="banner">
+            <div class="slds-grid">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <img src="https://inovationsoft-dev-ed.my.salesforce.com/img/icon/t4v35/standard/account_120.png" class="icon " alt="Account" title="Account" style="background-color: blue;max-width: 44%;height: auto;"></img>
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-heading--label" style="font-size: 1.20rem;line-height: 1.25;text-transform: uppercase;letter-spacing: .0625em;color: #54698d;">Account</p>
+                        <h1 class="slds-text-heading--Large" style="font-size: 2.50rem;line-height: 1.25;letter-spacing: .0625em;">{!Account.Name}</h1>
+<!--                         <h2><chatter:follow entityId="{!contact.id}"/><>  -->
+                        <button class="slds-button slds-button--neutral" style="height: 37px;width: 98px;"><a href="#">Follow</a></button>
+                     </div>
+                </div>
+            </div>
+        </div>
+   
+    </div>
+    </html>
+</apex:page>

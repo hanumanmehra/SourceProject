@@ -1,0 +1,11 @@
+<aura:component controller="CampignController">
+	<aura:attribute name="CampingList" type="Camping_Item__c[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+     <ol>
+        <li>Bug Spray</li>
+         <li>Bear Repellant</li>
+         <li>Goat Food</li>
+   
+    </ol>
+</aura:component>

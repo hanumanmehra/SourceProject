@@ -1,0 +1,6 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>My fancy Site</h1>
+ <apex:insert name="Body"></apex:insert>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

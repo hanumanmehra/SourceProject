@@ -1,0 +1,49 @@
+<apex:page Controller="GoogleDriveIntegration">
+	<html>
+        <title>Google drive integration</title>
+        <apex:form >
+            <apex:pageBlock >
+                <apex:actionRegion >
+                    <apex:commandbutton action="{!DriveAuth}" value="Google Drive Authentication" />
+                    <br/><br/><br/>
+                  	<apex:inputFile value="{!file}" contentType="{!filetype}" filename="{!filename}"/> 
+                    <apex:commandbutton action="{!uploadFile}" value="Upload File"  />
+                </apex:actionRegion>
+            </apex:pageBlock>
+        </apex:form>
+        
+        <apex:form >  
+            <apex:actionFunction name="fileDelete" action="{!deleteFile}" rerender="table"> 
+                <apex:param value="" name="fileDel" assignTo="{!fileId}" />
+            </apex:actionFunction> 
+               
+            <apex:pageblock id="pgblock">  
+                <apex:commandbutton action="{!allFiles}" value="Fetch All Files" />
+                
+                <apex:actionRegion id="regn">
+                    <apex:pageBlockTable id="table" value="{!driveWrapperList}" var="w">
+                        <apex:column value="{!w.fileTitle}"/>
+                        <apex:column > 
+                            <apex:commandlink value="Delete File" onClick="delFile('{!w.fileId}'); return false;"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:commandlink value="Download File" onClick="downloadFile('{!w.fileUrl}'); return false;"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:actionRegion>
+            </apex:pageblock>
+        </apex:form>  
+        <script type="text/javascript">
+            function delFile(fid)
+            {
+                fileDelete(fid);
+                alert(fid);
+            }
+            function downloadFile(url)
+            {
+		        if(url != undefined && url.trim().length>0)
+		        	window.open(url, '_self');
+		    }
+        </script>
+    </html>
+</apex:page>

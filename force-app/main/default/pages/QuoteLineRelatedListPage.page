@@ -1,0 +1,60 @@
+<apex:page >
+ <!--<apex:page StandardController="Quote" extensions="QuouteLineRelatedController" showHeader="false" sidebar="false">
+    <script>
+        function checkMaster(flag, clsName)
+        {
+            var checkboxes = document.getElementsByClassName(clsName);
+            console.log(checkboxes);
+            for(var i = 0; i < checkboxes.length; i++)
+            {
+                 checkboxes[i].checked = flag;
+            }   
+        } 
+        
+        function deleteQuote(selid) 
+        {
+            var r=confirm("Are you sure?");
+            if(r==true)
+            {
+                funname(selid);
+            }
+            else(r==false)
+            {
+                parent.child.close();
+            } 
+        }  
+    </script>
+    <apex:form id="frmId">
+        <apex:actionFunction name="funname" action="{!deleteSelectedQuoue}"  reRender="myId,pagemsgId"  status="as2" >
+            <apex:param name="as" assignto="{!selectedId}" value=""/>
+        </apex:actionFunction>
+        <apex:pageBlock id="pbId" title="Quote Line Items({!quoteRecord.Pricebook2.Name})"> 
+            <apex:pageBlockButtons location="top">
+                <apex:commandLink value="Edit All" action="{!editAllQuoteLine}" styleClass="btn" target="_blank" style="text-decoration : none;" rendered="{!if(isRecordLock==true,false,true)}"></apex:CommandLink>
+                <apex:commandLink value="Add New Line Item"  action="{!addNewQuoteLine}" styleClass="btn" target="_blank" style="text-decoration : none;" rendered="{!if(isRecordLock==true,false,true)}"></apex:CommandLink>
+            </apex:pageBlockButtons>
+            <apex:pageblocktable value="{!quoteLineItemWrapperList}" var="qcwr" id="tableid">
+                <apex:column >
+                    <apex:facet name="header"><apex:inputCheckbox styleclass="masterchk2" onclick="checkMaster(this.checked,'childchk1')" /></apex:facet>
+                        <apex:inputCheckbox id="inputId"  value="{!qcwr.isChecked}" onclick="" styleClass="childchk1" >
+                        </apex:inputCheckbox>
+                </apex:column>
+                <apex:column headerValue="Action">
+                    <apex:outputLink title="" value="/{!qcwr.quoutLine.Id}/e?retURL={!qcwr.quoutLine.QuoteId}" style="color: #015ba7;text-decoration: none;font-weight: normal;" rendered="{!if(isRecordLock ==true,false,true)}" target="_blank">Edit </apex:outputLink>
+                    &nbsp;&nbsp;
+                    <apex:CommandLink id="cmdId" onclick="deleteQuote('{!qcwr.quoutLine.Id}')" value="Del" style="color: #015ba7;text-decoration: none;font-weight: normal;" rendered="{!if(isRecordLock==true,false,true)}" rerender="pbId">          
+                    </apex:CommandLink>
+                </apex:column> 
+                <apex:column headerValue="Product">
+                    <apex:outputLink value="/{!qcwr.quoutLine.Id}" target="_blank">{!qcwr.quoutLine.Product2.name}</apex:outputLink>
+                </apex:column>
+                <apex:column value="{!qcwr.quoutLine.ListPrice}"/>
+                <apex:column value="{!qcwr.quoutLine.UnitPrice}"/>
+                <apex:column value="{!qcwr.quoutLine.Quantity}"/>
+                <apex:column value="{!qcwr.quoutLine.Subtotal}"/>
+                <apex:column value="{!qcwr.quoutLine.TotalPrice}"/>
+            </apex:pageblocktable> 
+        </apex:pageBlock> 
+    </apex:form>
+</apex:page>-->
+</apex:page>

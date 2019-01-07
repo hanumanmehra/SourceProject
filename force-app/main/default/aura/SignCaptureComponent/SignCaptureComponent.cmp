@@ -1,0 +1,10 @@
+<aura:component >
+	<BGSIGCAP:SignatureCapture recordId="{!v.recordId}" 
+    startMsg="Click the button to get started"
+    enterMsg="Please sign below"
+    completeMsg="Here is the signature you entered"
+    width="50%"
+    height="200px"
+    saveButtonLabel="Save"
+    ClearButtonLabel="clear"/>
+</aura:component>
